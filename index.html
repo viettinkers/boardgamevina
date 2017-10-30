@@ -9,19 +9,23 @@
   <link rel="stylesheet" href="public/css/style.css">
 </head>
 <body ng-app="BlankApp" ng-cloak>
-  <div ng-controller="GameController as gameCtrl"
-       class="wrapper">
-    <md-button ng-repeat="tile in gameCtrl.getTiles()"
-         ng-style="tile.styles"
-         class="box md-raised">
-      <div class="resource"
-           ng-if="tile.resourceClass">
-        <i class="fa"
-           aria-hidden="true"
-           ng-class="tile.resourceClass"></i>
-      </div>
-      {{tile.city}} 
-    </md-button>
+
+  <div ng-controller="GameController as gameCtrl">
+    <div class="board-wrapper">
+      <md-button ng-repeat="tile in gameCtrl.getTiles()"
+           ng-style="tile.styles"
+           ng-click="tile.nextColor()"
+           class="box md-raised">
+        <div class="resource"
+             style="display: none;"
+             ng-if="tile.resourceClass">
+          <i class="fa"
+             aria-hidden="true"
+             ng-class="tile.resourceClass"></i>
+        </div>
+        {{tile.city}} 
+      </md-button>
+    </div>
   </div>
   
   <!-- Angular Material requires Angular.js Libraries -->

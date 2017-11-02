@@ -25,8 +25,8 @@
              ng-if="tile.getFaStyles().length">
           <i class="fa"
              aria-hidden="true"
-             ng-repeat="faStyle in tile.getFaStyles()"
-             ng-class="faStyle"></i>
+             ng-repeat="faStyle in tile.faStyles"
+             ng-class="faStyle.style"></i>
         </div>
         {{tile.city}} 
       </md-button>

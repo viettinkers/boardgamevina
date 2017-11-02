@@ -3,28 +3,121 @@
   <title>boardgame</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/png" href="favicon.png"/>
   <!-- Angular Material style sheet -->
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
   <link rel="stylesheet" href="public/css/font-awesome.css">
   <link rel="stylesheet" href="public/css/style.css">
+  <link
+      rel="stylesheet"
+      href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
 </head>
 <body ng-app="BlankApp" ng-cloak>
 
-  <div ng-controller="GameController as gameCtrl">
+  <div ng-controller="GameController as gameCtrl"
+       class="wrapper">
     <div class="board-wrapper">
       <md-button ng-repeat="tile in gameCtrl.getTiles()"
            ng-style="tile.styles"
-           ng-click="tile.nextColor()"
+           ng-click="tile.place(gameCtrl.placement)"
            class="box md-raised">
         <div class="resource"
-             style="display: none;"
-             ng-if="tile.resourceClass">
+             ng-if="tile.getFaStyles().length">
           <i class="fa"
              aria-hidden="true"
-             ng-class="tile.resourceClass"></i>
+             ng-repeat="faStyle in tile.getFaStyles()"
+             ng-class="faStyle"></i>
         </div>
         {{tile.city}} 
       </md-button>
+    </div>
+    <div class="controls-wrapper">
+      <md-button
+           ng-click="gameCtrl.resetPlacement()">
+        <i class="fa fa-mouse-pointer"
+           aria-hidden="true"></i>
+      </md-button>
+      <md-button
+           ng-click="gameCtrl.togglePerson()"
+           ng-class="{'md-primary': (gameCtrl.placement == 'person')}">
+        <i class="fa fa-male"
+           aria-hidden="true"></i>
+      </md-button>
+      <md-button
+           ng-click="gameCtrl.toggleEnemy()"
+           ng-class="{'md-primary': (gameCtrl.placement == 'enemy')}">
+        <i class="fa fa-user-secret"
+           aria-hidden="true"></i>
+      </md-button>
+      <md-button
+           ng-click="gameCtrl.toggleTown()"
+           ng-class="{'md-primary': (gameCtrl.placement == 'town')}">
+        <i class="fa fa-home"
+           aria-hidden="true"></i>
+      </md-button>
+      <md-button
+           ng-click="gameCtrl.toggleFortress()"
+           ng-class="{'md-primary': (gameCtrl.placement == 'fortress')}">
+        <i class="fa fa-building"
+           aria-hidden="true"></i>
+      </md-button>
+      <div>
+        <md-button class="small-btn"
+                   ng-click="gameCtrl.minusResource(gameCtrl.resource, 'forest')">
+          <i class="fa fa-minus-square-o"
+             aria-hidden="true"></i>
+        </md-button>
+        <span>
+          <i class="fa fa-tree"
+             aria-hidden="true"></i>
+          <i class="fa fa-times"
+             aria-hidden="true"></i>
+          {{gameCtrl.resource.forest}}
+        </span>
+        <md-button class="small-btn"
+                   ng-click="gameCtrl.plusResource(gameCtrl.resource, 'forest')">
+          <i class="fa fa-plus-square-o"
+             aria-hidden="true"></i>
+        </md-button>
+      </div>
+      <div>
+        <md-button class="small-btn"
+                   ng-click="gameCtrl.minusResource(gameCtrl.resource, 'field')">
+          <i class="fa fa-minus-square-o"
+             aria-hidden="true"></i>
+        </md-button>
+        <span>
+          <i class="fa fa-pagelines"
+             aria-hidden="true"></i>
+          <i class="fa fa-times"
+             aria-hidden="true"></i>
+          {{gameCtrl.resource.field}}
+        </span>
+        <md-button class="small-btn"
+                   ng-click="gameCtrl.plusResource(gameCtrl.resource, 'field')">
+          <i class="fa fa-plus-square-o"
+             aria-hidden="true"></i>
+        </md-button>
+      </div>
+      <div>
+        <md-button class="small-btn"
+                   ng-click="gameCtrl.minusResource(gameCtrl.resource, 'mountain')">
+          <i class="fa fa-minus-square-o"
+             aria-hidden="true"></i>
+        </md-button>
+        <span>
+          <i class="fa fa-cubes"
+             aria-hidden="true"></i>
+          <i class="fa fa-times"
+             aria-hidden="true"></i>
+          {{gameCtrl.resource.mountain}}
+        </span>
+        <md-button class="small-btn"
+                   ng-click="gameCtrl.plusResource(gameCtrl.resource, 'mountain')">
+          <i class="fa fa-plus-square-o"
+             aria-hidden="true"></i>
+        </md-button>
+      </div>
     </div>
   </div>
   

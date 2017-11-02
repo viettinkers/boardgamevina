@@ -26,6 +26,34 @@ body {
     .resource {
       margin-bottom: 4px;
     }
+
+    .fa {
+      padding: 0 1px;
+    }
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.controls-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .small-btn {
+    min-width: 36px;
   }
 
+  .fa-times {
+    font-size: 10px;
+    position: relative;
+    top: -2px;
+  }
+
+  .fa {
+    width: 20px;
+    text-align: center;
+  }
 }

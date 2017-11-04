@@ -100,6 +100,9 @@ TileModel.prototype.place = function(placement) {
   }
   if (placement == 'person') {
     this.hasPerson = !this.hasPerson;
+    if (this.hasPerson) {
+      this.enemies = 0;
+    }
   } else if (placement == 'town') {
     this.hasTown = !this.hasTown;
   } else if (placement == 'fortress') {

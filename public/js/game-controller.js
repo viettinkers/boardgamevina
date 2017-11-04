@@ -3,20 +3,25 @@ GameController = function($scope, $element, $timeout, tileService) {
   this.element_ = $element;
   this.timeout_ = $timeout;
   this.tileService_ = tileService;
-  this.resource = {
-    forest: 0,
-    mountain: 0,
-    field: 0
-  };
+  this.resources = [];
   this.placement = '';
   this.stacks = [this.tileService_.getCards(), []];
   this.lastCard = '';
   this.lastDrawnStack_ = null;
   this.isDrawingCards = false;
+  this.addPlayer();
 };
 
 GameController.prototype.getTiles = function() {
   return this.tileService_.getTiles();
+};
+
+GameController.prototype.addPlayer = function() {
+  this.resources.push({
+    forest: 0,
+    mountain: 0,
+    field: 0
+  });
 };
 
 GameController.prototype.minusResource = function(resource, prop) {

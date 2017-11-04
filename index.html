@@ -66,69 +66,80 @@
         <i class="fa fa-building"
            aria-hidden="true"></i>
       </md-button>
-      <div>
-        <md-button class="small-btn"
-                   aria-label="reduce resource"
-                   ng-click="gameCtrl.minusResource(gameCtrl.resource, 'forest')">
-          <i class="fa fa-minus-square-o"
-             aria-hidden="true"></i>
-        </md-button>
-        <span>
-          <i class="fa fa-tree"
-             aria-hidden="true"></i>
-          <i class="fa fa-times"
-             aria-hidden="true"></i>
-          {{gameCtrl.resource.forest}}
-        </span>
-        <md-button class="small-btn"
-                   aria-label="add resource"
-                   ng-click="gameCtrl.plusResource(gameCtrl.resource, 'forest')">
-          <i class="fa fa-plus-square-o"
-             aria-hidden="true"></i>
-        </md-button>
+      <resource-panel></resource-panel>
+      <div ng-repeat="resource in gameCtrl.resources"
+           class="resource-panel">
+        <div>
+          <md-button class="small-btn"
+                     aria-label="reduce resource"
+                     ng-click="gameCtrl.minusResource(resource, 'forest')">
+            <i class="fa fa-minus-square-o"
+               aria-hidden="true"></i>
+          </md-button>
+          <span>
+            <i class="fa fa-tree"
+               aria-hidden="true"></i>
+            <i class="fa fa-times"
+               aria-hidden="true"></i>
+            {{resource.forest}}
+          </span>
+          <md-button class="small-btn"
+                     aria-label="add resource"
+                     ng-click="gameCtrl.plusResource(resource, 'forest')">
+            <i class="fa fa-plus-square-o"
+               aria-hidden="true"></i>
+          </md-button>
+        </div>
+        <div>
+          <md-button class="small-btn"
+                     aria-label="reduce resource"
+                     ng-click="gameCtrl.minusResource(resource, 'field')">
+            <i class="fa fa-minus-square-o"
+               aria-hidden="true"></i>
+          </md-button>
+          <span>
+            <i class="fa fa-pagelines"
+               aria-hidden="true"></i>
+            <i class="fa fa-times"
+               aria-hidden="true"></i>
+            {{resource.field}}
+          </span>
+          <md-button class="small-btn"
+                     aria-label="add resource"
+                     ng-click="gameCtrl.plusResource(resource, 'field')">
+            <i class="fa fa-plus-square-o"
+               aria-hidden="true"></i>
+          </md-button>
+        </div>
+        <div>
+          <md-button class="small-btn"
+                     aria-label="reduce resource"
+                     ng-click="gameCtrl.minusResource(resource, 'mountain')">
+            <i class="fa fa-minus-square-o"
+               aria-hidden="true"></i>
+          </md-button>
+          <span>
+            <i class="fa fa-cubes"
+               aria-hidden="true"></i>
+            <i class="fa fa-times"
+               aria-hidden="true"></i>
+            {{resource.mountain}}
+          </span>
+          <md-button class="small-btn"
+                     aria-label="add resource"
+                     ng-click="gameCtrl.plusResource(resource, 'mountain')">
+            <i class="fa fa-plus-square-o"
+               aria-hidden="true"></i>
+          </md-button>
+        </div>
       </div>
-      <div>
-        <md-button class="small-btn"
-                   aria-label="reduce resource"
-                   ng-click="gameCtrl.minusResource(gameCtrl.resource, 'field')">
-          <i class="fa fa-minus-square-o"
-             aria-hidden="true"></i>
-        </md-button>
-        <span>
-          <i class="fa fa-pagelines"
-             aria-hidden="true"></i>
-          <i class="fa fa-times"
-             aria-hidden="true"></i>
-          {{gameCtrl.resource.field}}
-        </span>
-        <md-button class="small-btn"
-                   aria-label="add resource"
-                   ng-click="gameCtrl.plusResource(gameCtrl.resource, 'field')">
-          <i class="fa fa-plus-square-o"
-             aria-hidden="true"></i>
-        </md-button>
-      </div>
-      <div>
-        <md-button class="small-btn"
-                   aria-label="reduce resource"
-                   ng-click="gameCtrl.minusResource(gameCtrl.resource, 'mountain')">
-          <i class="fa fa-minus-square-o"
-             aria-hidden="true"></i>
-        </md-button>
-        <span>
-          <i class="fa fa-cubes"
-             aria-hidden="true"></i>
-          <i class="fa fa-times"
-             aria-hidden="true"></i>
-          {{gameCtrl.resource.mountain}}
-        </span>
-        <md-button class="small-btn"
-                   aria-label="add resource"
-                   ng-click="gameCtrl.plusResource(gameCtrl.resource, 'mountain')">
-          <i class="fa fa-plus-square-o"
-             aria-hidden="true"></i>
-        </md-button>
-      </div>
+      <md-button
+           aria-label="thêm người"
+           ng-click="gameCtrl.addPlayer()">
+        <md-tooltip>Thêm người chơi</md-tooltip>
+        <i class="fa fa-male"
+           aria-hidden="true"></i>+
+      </md-button>
       <div class="card-stacks">
         <div class="stack"
              ng-repeat="stack in gameCtrl.stacks track by $index">

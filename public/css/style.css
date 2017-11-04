@@ -31,9 +31,14 @@ body {
 
 .controls-wrapper {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  margin-left: 8px; }
+  .controls-wrapper > .md-button {
+    max-width: 120px; }
   .controls-wrapper .small-btn {
-    min-width: 36px; }
+    min-width: 36px;
+    margin-right: 0;
+    margin-left: 2px; }
   .controls-wrapper .fa-times {
     font-size: 10px;
     position: relative;
@@ -41,3 +46,21 @@ body {
   .controls-wrapper .fa {
     width: 20px;
     text-align: center; }
+
+.stack {
+  width: 180px; }
+  .stack .card-wrapper {
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    display: inline-block;
+    margin-right: 2px;
+    width: 8px; }
+    .shuffling-cards .stack .card-wrapper {
+      opacity: 0; }
+  .stack .card {
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    display: inline-block;
+    background-color: #bdbdbd;
+    border-radius: 2px;
+    width: 12px;
+    height: 24px; }

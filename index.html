@@ -33,29 +33,34 @@
     </div>
     <div class="controls-wrapper">
       <md-button
+           aria-label="placement"
            ng-click="gameCtrl.resetPlacement()">
         <i class="fa fa-mouse-pointer"
            aria-hidden="true"></i>
       </md-button>
       <md-button
+           aria-label="person"
            ng-click="gameCtrl.togglePerson()"
            ng-class="{'md-primary': (gameCtrl.placement == 'person')}">
         <i class="fa fa-male"
            aria-hidden="true"></i>
       </md-button>
       <md-button
+           aria-label="enemy"
            ng-click="gameCtrl.toggleEnemy()"
            ng-class="{'md-primary': (gameCtrl.placement == 'enemy')}">
         <i class="fa fa-user-secret"
            aria-hidden="true"></i>
       </md-button>
       <md-button
+           aria-label="town"
            ng-click="gameCtrl.toggleTown()"
            ng-class="{'md-primary': (gameCtrl.placement == 'town')}">
         <i class="fa fa-home"
            aria-hidden="true"></i>
       </md-button>
       <md-button
+           aria-label="fortress"
            ng-click="gameCtrl.toggleFortress()"
            ng-class="{'md-primary': (gameCtrl.placement == 'fortress')}">
         <i class="fa fa-building"
@@ -63,6 +68,7 @@
       </md-button>
       <div>
         <md-button class="small-btn"
+                   aria-label="reduce resource"
                    ng-click="gameCtrl.minusResource(gameCtrl.resource, 'forest')">
           <i class="fa fa-minus-square-o"
              aria-hidden="true"></i>
@@ -75,6 +81,7 @@
           {{gameCtrl.resource.forest}}
         </span>
         <md-button class="small-btn"
+                   aria-label="add resource"
                    ng-click="gameCtrl.plusResource(gameCtrl.resource, 'forest')">
           <i class="fa fa-plus-square-o"
              aria-hidden="true"></i>
@@ -82,6 +89,7 @@
       </div>
       <div>
         <md-button class="small-btn"
+                   aria-label="reduce resource"
                    ng-click="gameCtrl.minusResource(gameCtrl.resource, 'field')">
           <i class="fa fa-minus-square-o"
              aria-hidden="true"></i>
@@ -94,6 +102,7 @@
           {{gameCtrl.resource.field}}
         </span>
         <md-button class="small-btn"
+                   aria-label="add resource"
                    ng-click="gameCtrl.plusResource(gameCtrl.resource, 'field')">
           <i class="fa fa-plus-square-o"
              aria-hidden="true"></i>
@@ -101,6 +110,7 @@
       </div>
       <div>
         <md-button class="small-btn"
+                   aria-label="reduce resource"
                    ng-click="gameCtrl.minusResource(gameCtrl.resource, 'mountain')">
           <i class="fa fa-minus-square-o"
              aria-hidden="true"></i>
@@ -113,10 +123,41 @@
           {{gameCtrl.resource.mountain}}
         </span>
         <md-button class="small-btn"
+                   aria-label="add resource"
                    ng-click="gameCtrl.plusResource(gameCtrl.resource, 'mountain')">
           <i class="fa fa-plus-square-o"
              aria-hidden="true"></i>
         </md-button>
+      </div>
+      <div class="card-stacks">
+        <div class="stack"
+             ng-repeat="stack in gameCtrl.stacks track by $index">
+          <div>
+            <md-button class="small-btn"
+                       aria-label="draw"
+                       ng-disabled="gameCtrl.isDrawingCards"
+                       ng-click="gameCtrl.drawCard($index)">
+              <md-tooltip>Lấy bài</md-tooltip>
+              <i class="fa fa-hand-lizard-o"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button class="small-btn"
+                       aria-label="shuffle"
+                       ng-click="gameCtrl.shuffleCards($index)">
+              <md-tooltip>Xáo bài</md-tooltip>
+              <i class="fa fa-refresh"
+                 aria-hidden="true"></i>
+            </md-button>
+            <span class="md-caption"
+                  ng-if="gameCtrl.doShowLastCard($index)">
+              "{{gameCtrl.lastCard}}"
+            </span>
+          </div>
+          <div class="card-wrapper"
+               ng-repeat="card in gameCtrl.stacks[$index]">
+            <div class="card"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

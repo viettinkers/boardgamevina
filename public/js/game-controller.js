@@ -3,9 +3,14 @@ GameController = function($scope, $element, $timeout, tileService) {
   this.element_ = $element;
   this.timeout_ = $timeout;
   this.tileService_ = tileService;
+  this.restart();
+};
+
+GameController.prototype.restart = function() {
+  this.tiles_ = this.tileService_.generateTiles();
   this.resources = [];
   this.placement = '';
-  this.stacks = [this.tileService_.getCards(), []];
+  this.stacks = [this.tileService_.generateCards(), []];
   this.lastCard = '';
   this.lastDrawnStack_ = null;
   this.isDrawingCards = false;
@@ -13,7 +18,7 @@ GameController = function($scope, $element, $timeout, tileService) {
 };
 
 GameController.prototype.getTiles = function() {
-  return this.tileService_.getTiles();
+  return this.tiles_;
 };
 
 GameController.prototype.addPlayer = function() {

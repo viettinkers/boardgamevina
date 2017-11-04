@@ -7,8 +7,8 @@ body {
 .board-wrapper {
   display: grid;
   grid-gap: 4px;
-  grid-template-columns: repeat(10, [col] 40px);
-  grid-template-rows: repeat(16, [row] 40px);
+  grid-template-columns: repeat(10, [col] 56px);
+  grid-template-rows: repeat(16, [row] 56px);
   background-color: #fff;
   color: #444; }
   .board-wrapper .box {
@@ -69,3 +69,9 @@ body {
   background-color: #e5e5e5;
   border-radius: 2px;
   margin: 2px 0; }
+
+.reset {
+  position: fixed;
+  bottom: 4px;
+  right: 24px;
+  opacity: .5; }

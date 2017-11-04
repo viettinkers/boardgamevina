@@ -16,6 +16,13 @@
 
   <div ng-controller="GameController as gameCtrl"
        class="wrapper">
+    <md-button aria-label="Restart"
+               class="reset"
+               ng-click="gameCtrl.restart()">
+      <md-tooltip>Tái sinh</md-tooltip>
+      <i class="fa fa-refresh"
+         aria-hidden="true"></i>
+    </md-button>
     <div class="board-wrapper">
       <md-button ng-repeat="tile in gameCtrl.getTiles()"
            ng-style="tile.styles"

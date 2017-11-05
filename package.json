@@ -1,17 +1,49 @@
 {
-  "name": "boardgame",
+  "name": "boardgamevina",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Trò chơi Nước Non Ngàn Dặm",
+  "repository": "https://github.com/viettinkers/boardgamevina",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "e2e": "rm -rf node_modules/ &&  samples test build --deploy --timeout 20m --builderProject $GCLOUD_PROJECT",
+    "test": "samples test app",
+    "cover": "nyc --cache npm test; nyc report --reporter=html"
   },
   "author": "viettinkers",
-  "license": "ISC",
+  "contributors": [
+    {
+      "name": "Vietanh",
+      "email": "vietanh@bettergui.com"
+    }
+  ],
+  "cloud-repo-tools": {
+    "requiresKeyFile": true,
+    "requiresProjectId": true
+  },
+  "license": "Apache-2.0",
+  "semistandard": {
+    "globals": [
+      "after",
+      "afterEach",
+      "before",
+      "beforeEach",
+      "describe",
+      "it"
+    ]
+  },
+  "dependencies": {
+    "express": "4.16.2"
+  },
   "devDependencies": {
+    "@google-cloud/nodejs-repo-tools": "2.1.0",
+    "ava": "0.23.0",
+    "supertest": "3.0.0",
+    "tap-dot": "1.0.5",
     "gulp": "^3.9.1",
     "gulp-sass": "^3.1.0"
   },
-  "dependencies": {
+  "engines": {
+    "node": ">=4.3.2"
   }
 }

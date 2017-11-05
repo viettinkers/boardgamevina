@@ -15,6 +15,7 @@ GameController.prototype.restart = function() {
   this.lastDrawnStack_ = null;
   this.isDrawingCards = false;
   this.isGameStarted = false;
+  this.isWinning = false;
   this.addPlayer();
 };
 
@@ -107,11 +108,18 @@ GameController.prototype.updateResourceSurplus_ = function() {
     resource.forestPlus = 0;
     resource.fieldPlus = 0;
     resource.mountainPlus = 0;
+    var discoveredTowns = 0;
     _.each(this.tiles_, function(tile) {
       if ((tile.playerCount['town'] && tile.playerCount['town'] == resourceIndex + 1) ||
           (tile.playerCount['fortress'] && tile.playerCount['fortress'] == resourceIndex + 1)) {
         resource[tile.resource + 'Plus']++;
       }
+      if (tile.isDiscovered) {
+        discoveredTowns++;
+      }
     }.bind(this));
+    if (discoveredTowns == this.tiles_.length) {
+      this.isWinning = true;
+    }
   }.bind(this));
 };

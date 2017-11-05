@@ -6,9 +6,9 @@
   <link rel="shortcut icon" type="image/png" href="favicon.png"/>
   <!-- Angular Material style sheet -->
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
-  <link rel="stylesheet" href="public/css/font-awesome.css">
+  <link rel="stylesheet" href="css/font-awesome.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-  <link rel="stylesheet" href="public/css/style.css">
+  <link rel="stylesheet" href="css/style.css">
   <link
       rel="stylesheet"
       href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
@@ -16,7 +16,8 @@
 <body ng-app="BlankApp" ng-cloak>
 
   <div ng-controller="GameController as gameCtrl"
-       class="wrapper">
+       class="wrapper"
+       ng-class="{'winning': gameCtrl.isWinning}">
     <md-button aria-label="Restart"
                class="reset"
                ng-click="gameCtrl.restart()">
@@ -36,7 +37,7 @@
              ng-repeat="faStyle in tile.faStyles"
              ng-class="faStyle.style">
             <span class="annotate"
-                  ng-if="faStyle.playerCount">
+                  ng-if="faStyle.playerCount && gameCtrl.getNumPlayers() > 1">
               {{faStyle.playerCount}}
             </span>    
           </i>
@@ -184,6 +185,7 @@
              ng-repeat="stack in gameCtrl.stacks track by $index">
           <div>
             <md-button aria-label="draw"
+                       ng-class="{'md-primary': gameCtrl.doShowLastCard($index)}"
                        ng-disabled="gameCtrl.isDrawingCards"
                        ng-click="gameCtrl.drawCard($index)">
               <md-tooltip>Lấy bài</md-tooltip>
@@ -221,11 +223,11 @@
 
   <!-- Angular Material Library -->
   <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
-  <script src="public/js/map.js"></script>  
-  <script src="public/js/tile-model.js"></script>  
-  <script src="public/js/tile-service.js"></script>  
-  <script src="public/js/game-controller.js"></script>  
-  <script src="public/js/app.js"></script>
+  <script src="js/map.js"></script>  
+  <script src="js/tile-model.js"></script>  
+  <script src="js/tile-service.js"></script>  
+  <script src="js/game-controller.js"></script>  
+  <script src="js/app.js"></script>
   
 </body>
 </html>

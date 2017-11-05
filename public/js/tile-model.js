@@ -35,6 +35,8 @@ TileModel = function(value, cells, neighbors, city) {
 
   this.enemies = 0;
 
+  this.playerCount = {};
+
   this.updateSkins();
 
   this.faStyles = this.getFaStyles();
@@ -59,9 +61,9 @@ TileModel.prototype.getFaStyles = function() {
     styles.push({style: TileModel.RESOURCE_TO_FA['person']});
   }
   if (this.hasFortress) {
-    styles.push({style: TileModel.RESOURCE_TO_FA['fortress']});
+    styles.push({style: TileModel.RESOURCE_TO_FA['fortress'], playerCount: this.playerCount['fortress']});
   } else if (this.hasTown) {
-    styles.push({style: TileModel.RESOURCE_TO_FA['town']});
+    styles.push({style: TileModel.RESOURCE_TO_FA['town'], playerCount: this.playerCount['town']});
   }
   if (this.enemies) {
     for (var i = 0; i < this.enemies; i++) {
@@ -94,7 +96,27 @@ TileModel.prototype.updateSkins = function() {
       'color': this.colors[this.colorIndex].color};
 };
 
-TileModel.prototype.place = function(placement) {
+TileModel.prototype.updatePlayerCount_ = function(prop, opt_playerCount) {
+  var hasArg = 'has' + prop[0].toUpperCase() + prop.substr(1);
+  if (!opt_playerCount || opt_playerCount <= 1) {
+    this[hasArg] = !this[hasArg];
+    return;
+  }
+  if (!this.playerCount[prop]) {
+    this.playerCount[prop] = 1;
+    this[hasArg] = true;
+    return;
+  }
+  if (this.playerCount[prop] < opt_playerCount) {
+    this.playerCount[prop]++;
+    this[hasArg] = true;
+    return;
+  }
+  this.playerCount[prop] = 0;
+  this[hasArg] = false;
+};
+
+TileModel.prototype.place = function(placement, opt_playerCount) {
   if (!this.isDiscovered && placement != 'enemy') {
     this.isDiscovered = true;
   }
@@ -104,9 +126,9 @@ TileModel.prototype.place = function(placement) {
       this.enemies = 0;
     }
   } else if (placement == 'town') {
-    this.hasTown = !this.hasTown;
+    this.updatePlayerCount_('town', opt_playerCount);
   } else if (placement == 'fortress') {
-    this.hasFortress = !this.hasFortress;
+    this.updatePlayerCount_('fortress', opt_playerCount);
   } else if (placement == 'enemy') {
     this.enemies = (this.enemies + 1) % 6;
   }

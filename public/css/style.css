@@ -14,7 +14,7 @@ body {
   .board-wrapper .box {
     box-sizing: border-box;
     padding: 4px;
-    font-size: 10px;
+    font-size: 13px;
     min-width: 0;
     min-height: 0;
     margin: 0;
@@ -23,7 +23,14 @@ body {
     .board-wrapper .box .resource {
       margin-bottom: 4px; }
     .board-wrapper .box .fa {
-      padding: 0 1px; }
+      padding: 2px 1px;
+      position: relative; }
+      .board-wrapper .box .fa .annotate {
+        font-family: "Roboto Mono";
+        font-size: 8px;
+        position: absolute;
+        right: -4px;
+        bottom: -3px; }
 
 .wrapper {
   display: flex;
@@ -36,7 +43,7 @@ body {
   .controls-wrapper > .md-button {
     max-width: 120px; }
   .controls-wrapper .small-btn {
-    min-width: 36px;
+    min-width: 40px;
     margin-right: 0;
     margin-left: 2px; }
   .controls-wrapper .fa-times {
@@ -48,13 +55,14 @@ body {
     text-align: center; }
 
 .stack {
-  width: 180px; }
+  width: 200px;
+  position: relative; }
   .stack .card-wrapper {
     transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 1;
     display: inline-block;
     margin-right: 2px;
-    width: 8px; }
+    width: 4px; }
     .shuffling-cards .stack .card-wrapper {
       opacity: 0; }
   .stack .card {
@@ -64,11 +72,15 @@ body {
     border-radius: 2px;
     width: 12px;
     height: 24px; }
+  .stack .shuffle {
+    position: relative;
+    top: -7px; }
 
 .resource-panel {
   background-color: #e5e5e5;
   border-radius: 2px;
-  margin: 2px 0; }
+  margin: 2px 0;
+  position: relative; }
 
 .reset {
   position: fixed;

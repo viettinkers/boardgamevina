@@ -16,7 +16,7 @@ body {
   .box {
     box-sizing: border-box;
     padding: 4px;
-    font-size: 10px;
+    font-size: 13px;
     min-width: 0;
     min-height: 0;
     margin: 0;
@@ -28,7 +28,16 @@ body {
     }
 
     .fa {
-      padding: 0 1px;
+      padding: 2px 1px;
+      position: relative;
+
+      .annotate {
+        font-family: "Roboto Mono";
+        font-size: 8px;
+        position: absolute;
+        right: -4px;
+        bottom: -3px;
+      }
     }
   }
 }
@@ -48,7 +57,7 @@ body {
   }
 
   .small-btn {
-    min-width: 36px;
+    min-width: 40px;
     margin-right: 0;
     margin-left: 2px;
   }
@@ -66,14 +75,15 @@ body {
 }
 
 .stack {
-  width: 180px;
+  width: 200px;
+  position: relative;
 
   .card-wrapper {
     transition: opacity 0.2s cubic-bezier(.4, 0, .2, 1);
     opacity: 1;
     display: inline-block;
     margin-right: 2px;
-    width: 8px;
+    width: 4px;
 
     .shuffling-cards & {
       opacity: 0;
@@ -88,12 +98,18 @@ body {
     width: 12px;
     height: 24px;
   }
+
+  .shuffle {
+    position: relative;
+    top: -7px;
+  }
 }
 
 .resource-panel {
   background-color: #e5e5e5;
   border-radius: 2px;
   margin: 2px 0;
+  position: relative;
 }
 
 .reset {

@@ -29,6 +29,14 @@ GameController.prototype.addPlayer = function() {
   });
 };
 
+GameController.prototype.removePlayer = function() {
+  this.resources.pop();
+};
+
+GameController.prototype.getNumPlayers = function() {
+  return this.resources.length;
+};
+
 GameController.prototype.minusResource = function(resource, prop) {
   resource[prop] = Math.max(0, resource[prop] - 1);
 };

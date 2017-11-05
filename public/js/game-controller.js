@@ -14,6 +14,7 @@ GameController.prototype.restart = function() {
   this.lastCard = '';
   this.lastDrawnStack_ = null;
   this.isDrawingCards = false;
+  this.isGameStarted = false;
   this.addPlayer();
 };
 
@@ -51,6 +52,7 @@ GameController.prototype.togglePerson = function() {
 
 GameController.prototype.toggleEnemy = function() {
   this.placement = this.placement != 'enemy' ? 'enemy' : '';
+  this.isGameStarted = true;
 };
 
 GameController.prototype.toggleTown = function() {
@@ -76,6 +78,9 @@ GameController.prototype.drawCard = function(stackIndex) {
     this.isDrawingCards = false;
     this.stacks[1 - stackIndex].push(this.lastCard);
   }.bind(this), 500);
+  if (this.isGameStarted) {
+    this.placement = 'enemy';
+  }
 };
 
 GameController.prototype.shuffleCards = function(stackIndex) {
@@ -92,3 +97,21 @@ GameController.prototype.doShowLastCard = function(stackIndex) {
       this.lastCard;
 };
 
+GameController.prototype.placeTile = function(tile) {
+  tile.place(this.placement, this.getNumPlayers());
+  this.updateResourceSurplus_();
+};
+
+GameController.prototype.updateResourceSurplus_ = function() {
+  _.each(this.resources, function(resource, resourceIndex) {
+    resource.forestPlus = 0;
+    resource.fieldPlus = 0;
+    resource.mountainPlus = 0;
+    _.each(this.tiles_, function(tile) {
+      if ((tile.playerCount['town'] && tile.playerCount['town'] == resourceIndex + 1) ||
+          (tile.playerCount['fortress'] && tile.playerCount['fortress'] == resourceIndex + 1)) {
+        resource[tile.resource + 'Plus']++;
+      }
+    }.bind(this));
+  }.bind(this));
+};

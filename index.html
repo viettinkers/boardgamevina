@@ -1,6 +1,6 @@
 <html lang="en" >
 <head>
-  <title>boardgame</title>
+  <title>Nước non ngàn dặm</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="UTF-8">
   <link rel="shortcut icon" type="image/png" href="favicon.png"/>
@@ -27,7 +27,7 @@
     <div class="board-wrapper">
       <md-button ng-repeat="tile in gameCtrl.getTiles()"
            ng-style="tile.styles"
-           ng-click="tile.place(gameCtrl.placement, gameCtrl.getNumPlayers())"
+           ng-click="gameCtrl.placeTile(tile)"
            class="box md-raised">
         <div class="resource"
              ng-if="tile.getFaStyles().length">
@@ -81,7 +81,7 @@
       </md-button>
       <div ng-repeat="resource in gameCtrl.resources"
            class="resource-panel">
-        <div>
+        <div class="resource-row">
           <md-button class="small-btn"
                      aria-label="reduce resource"
                      ng-click="gameCtrl.minusResource(resource, 'forest')">
@@ -101,8 +101,13 @@
             <i class="fa fa-plus-square-o"
                aria-hidden="true"></i>
           </md-button>
+          <span ng-if="resource.forestPlus">
+            <i class="fa fa-home"
+               aria-hidden="true"></i>
+            {{resource.forestPlus}}
+          </span>
         </div>
-        <div>
+        <div class="resource-row">
           <md-button class="small-btn"
                      aria-label="reduce resource"
                      ng-click="gameCtrl.minusResource(resource, 'field')">
@@ -122,8 +127,13 @@
             <i class="fa fa-plus-square-o"
                aria-hidden="true"></i>
           </md-button>
+          <span ng-if="resource.fieldPlus">
+            <i class="fa fa-home"
+               aria-hidden="true"></i>
+            {{resource.fieldPlus}}
+          </span>
         </div>
-        <div>
+        <div class="resource-row">
           <md-button class="small-btn"
                      aria-label="reduce resource"
                      ng-click="gameCtrl.minusResource(resource, 'mountain')">
@@ -143,6 +153,11 @@
             <i class="fa fa-plus-square-o"
                aria-hidden="true"></i>
           </md-button>
+          <span ng-if="resource.mountainPlus">
+            <i class="fa fa-home"
+               aria-hidden="true"></i>
+            {{resource.mountainPlus}}
+          </span>
         </div>
       </div>
       <div class="players">

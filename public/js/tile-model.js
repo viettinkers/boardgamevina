@@ -96,18 +96,14 @@ TileModel.prototype.updateSkins = function() {
       'color': this.colors[this.colorIndex].color};
 };
 
-TileModel.prototype.updatePlayerCount_ = function(prop, opt_playerCount) {
+TileModel.prototype.updatePlayerCount_ = function(prop, playerNum) {
   var hasArg = 'has' + prop[0].toUpperCase() + prop.substr(1);
-  if (!opt_playerCount || opt_playerCount <= 1) {
-    this[hasArg] = !this[hasArg];
-    return;
-  }
   if (!this.playerCount[prop]) {
     this.playerCount[prop] = 1;
     this[hasArg] = true;
     return;
   }
-  if (this.playerCount[prop] < opt_playerCount) {
+  if (this.playerCount[prop] < playerNum) {
     this.playerCount[prop]++;
     this[hasArg] = true;
     return;
@@ -116,7 +112,7 @@ TileModel.prototype.updatePlayerCount_ = function(prop, opt_playerCount) {
   this[hasArg] = false;
 };
 
-TileModel.prototype.place = function(placement, opt_playerCount) {
+TileModel.prototype.place = function(placement, playerNum) {
   if (!this.isDiscovered && placement != 'enemy') {
     this.isDiscovered = true;
   }
@@ -126,11 +122,19 @@ TileModel.prototype.place = function(placement, opt_playerCount) {
       this.enemies = 0;
     }
   } else if (placement == 'town') {
-    this.updatePlayerCount_('town', opt_playerCount);
+    this.updatePlayerCount_('town', playerNum);
   } else if (placement == 'fortress') {
-    this.updatePlayerCount_('fortress', opt_playerCount);
+    this.updatePlayerCount_('fortress', playerNum);
   } else if (placement == 'enemy') {
     this.enemies = (this.enemies + 1) % 6;
+  } else {
+    // Reset
+    this.isDiscovered = false; 
+    this.hasPerson = false;
+    this.enemies = 0;
+    this.hasTown = 0;
+    this.hasFortress = 0;
+    this.playerCount = {};
   }
   this.faStyles = this.getFaStyles();
 };

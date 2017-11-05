@@ -35,7 +35,7 @@ body {
         font-family: "Roboto Mono";
         font-size: 8px;
         position: absolute;
-        right: -4px;
+        right: -1px;
         bottom: -3px;
       }
     }
@@ -75,7 +75,7 @@ body {
 }
 
 .stack {
-  width: 200px;
+  width: 208px;
   position: relative;
 
   .card-wrapper {
@@ -109,7 +109,12 @@ body {
   background-color: #e5e5e5;
   border-radius: 2px;
   margin: 2px 0;
+  padding: 2px;
   position: relative;
+
+  .resource-row {
+    white-space: nowrap;
+  }
 }
 
 .reset {

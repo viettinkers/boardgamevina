@@ -3,7 +3,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px;
+  padding: 40px 0;
   min-width: 860px;
   min-height: 1000px;
 }
@@ -123,6 +123,10 @@ body {
     position: relative;
     top: -7px;
   }
+
+  .draw-row {
+    white-space: nowrap;
+  }
 }
 
 .resource-panel {
@@ -142,4 +146,8 @@ body {
   bottom: 4px;
   right: 24px;
   opacity: .5;
+}
+
+md-bottom-sheet {
+  position: fixed;
 }

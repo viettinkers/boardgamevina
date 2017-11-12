@@ -3,7 +3,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px;
+  padding: 40px 0;
   min-width: 860px;
   min-height: 1000px; }
 
@@ -87,6 +87,8 @@ body {
   .stack .shuffle {
     position: relative;
     top: -7px; }
+  .stack .draw-row {
+    white-space: nowrap; }
 
 .resource-panel {
   background-color: #e5e5e5;
@@ -102,3 +104,6 @@ body {
   bottom: 4px;
   right: 24px;
   opacity: .5; }
+
+md-bottom-sheet {
+  position: fixed; }

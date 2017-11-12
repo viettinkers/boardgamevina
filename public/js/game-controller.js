@@ -1,7 +1,8 @@
-GameController = function($scope, $element, $timeout, tileService) {
+GameController = function($scope, $element, $timeout, $mdBottomSheet, tileService) {
   this.scope_ = $scope;
   this.element_ = $element;
   this.timeout_ = $timeout;
+  this.mdBottomSheet_ = $mdBottomSheet;
   this.tileService_ = tileService;
   this.restart();
 };
@@ -84,6 +85,23 @@ GameController.prototype.drawCard = function(stackIndex) {
   }
 };
 
+GameController.prototype.drawEnemyCard = function(stackIndex) {
+  this.drawCard(stackIndex);
+  var hasTownOrFortress = false;
+  var drawnTile = null;
+  _.each(this.tiles_, function(tile) {
+    if (tile.city == this.lastCard) {
+      drawnTile = tile;
+      hasTownOrFortress = tile.hasTown || tile.hasFortress;
+      return false;
+    }
+  }.bind(this));
+  if (!hasTownOrFortress && drawnTile) {
+    this.placement = 'enemy';
+    this.placeTile(drawnTile);
+  }
+};
+
 GameController.prototype.shuffleCards = function(stackIndex) {
   this.stacks[stackIndex] = _.shuffle(this.stacks[stackIndex]);
   this.lastCard = '';
@@ -99,6 +117,137 @@ GameController.prototype.doShowLastCard = function(stackIndex) {
 };
 
 GameController.prototype.placeTile = function(tile) {
+  if (!this.placement) {
+    this.mdBottomSheet_.show({
+      template: `
+      <md-bottom-sheet class="md-grid" layout="column">
+        <div layout="row" layout-align="center center" ng-cloak>
+          <h2 class="md-title">{{tileSheetCtrl.getCity()}}</h2>
+        </div>
+        <div ng-cloak>
+          <md-list flex layout="row" layout-align="center center">
+            <md-button
+                 class="md-raised md-icon-button"
+                 aria-label="person">
+              <i class="fa fa-male"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button
+                 class="md-raised md-primary md-icon-button"
+                 aria-label="person">
+              <i class="fa fa-male"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button
+                 style="background-color: #2196F3;"
+                 class="md-raised md-primary md-icon-button"
+                 aria-label="person">
+              <i class="fa fa-male"
+                 aria-hidden="true"></i>
+            </md-button>
+          </md-list>
+          <md-list flex layout="row" layout-align="center center">
+            <md-button
+                 class="md-raised md-icon-button"
+                 aria-label="person">
+              <i class="fa fa-user-secret"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button
+                 class="md-raised md-primary md-icon-button"
+                 aria-label="person">
+              <i class="fa fa-user-secret"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button
+                 class="md-raised md-primary md-icon-button"
+                 aria-label="person">
+              2
+              <i class="fa fa-user-secret"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button
+                 class="md-raised md-primary md-icon-button"
+                 aria-label="person">
+              3
+              <i class="fa fa-user-secret"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button
+                 class="md-raised md-primary md-icon-button"
+                 aria-label="person">
+              4
+              <i class="fa fa-user-secret"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button
+                 class="md-raised md-primary md-icon-button"
+                 aria-label="person">
+              5
+              <i class="fa fa-user-secret"
+                 aria-hidden="true"></i>
+            </md-button>
+          </md-list>
+          <md-list flex layout="row" layout-align="center center">
+            <md-button
+                 class="md-raised md-icon-button"
+                 aria-label="person">
+              <i class="fa fa-home"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button
+                 class="md-raised md-primary md-icon-button"
+                 aria-label="person">
+              <i class="fa fa-home"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button
+                 style="background-color: #2196F3;"
+                 class="md-raised md-primary md-icon-button"
+                 aria-label="person">
+              <i class="fa fa-home"
+                 aria-hidden="true"></i>
+            </md-button>
+          </md-list>
+          <md-list flex layout="row" layout-align="center center">
+            <md-button
+                 class="md-raised md-icon-button"
+                 aria-label="person">
+              <i class="fa fa-building"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button
+                 class="md-raised md-primary md-icon-button"
+                 aria-label="person">
+              <i class="fa fa-building"
+                 aria-hidden="true"></i>
+            </md-button>
+            <md-button
+                 style="background-color: #2196F3;"
+                 class="md-raised md-primary md-icon-button"
+                 aria-label="person">
+              <i class="fa fa-building"
+                 aria-hidden="true"></i>
+            </md-button>
+          </md-list>
+          <md-list flex layout="row" layout-align="center center">
+            <md-button
+                 class="md-raised"
+                 aria-label="person">
+              Xóa
+            </md-button>
+          </md-list>
+        </div>
+      </md-bottom-sheet>
+      `,
+      locals: {
+        tile: tile
+      },
+      controller: 'TileSheetController as tileSheetCtrl'
+    });
+    return;
+  }
+
   tile.place(this.placement, this.getNumPlayers());
   this.updateResourceSurplus_();
 };
@@ -123,3 +272,8 @@ GameController.prototype.updateResourceSurplus_ = function() {
     }
   }.bind(this));
 };
+
+GameController.prototype.doHighlight = function(tile) {
+  return tile.city == this.lastCard;
+};
+

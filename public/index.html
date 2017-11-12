@@ -26,7 +26,9 @@
          aria-hidden="true"></i>
     </md-button>
     <div class="board-wrapper">
-      <md-button ng-repeat="tile in gameCtrl.getTiles()"
+      <md-button
+           ng-class="{'md-primary': gameCtrl.doHighlight(tile)}"
+           ng-repeat="tile in gameCtrl.getTiles()"
            ng-style="tile.styles"
            ng-click="gameCtrl.placeTile(tile)"
            class="box md-raised">
@@ -55,28 +57,28 @@
       <md-button
            aria-label="person"
            ng-click="gameCtrl.togglePerson()"
-           ng-class="{'md-primary': (gameCtrl.placement == 'person')}">
+           ng-class="{'md-raised': (gameCtrl.placement == 'person')}">
         <i class="fa fa-male"
            aria-hidden="true"></i>
       </md-button>
       <md-button
            aria-label="enemy"
            ng-click="gameCtrl.toggleEnemy()"
-           ng-class="{'md-primary': (gameCtrl.placement == 'enemy')}">
+           ng-class="{'md-raised': (gameCtrl.placement == 'enemy')}">
         <i class="fa fa-user-secret"
            aria-hidden="true"></i>
       </md-button>
       <md-button
            aria-label="town"
            ng-click="gameCtrl.toggleTown()"
-           ng-class="{'md-primary': (gameCtrl.placement == 'town')}">
+           ng-class="{'md-raised': (gameCtrl.placement == 'town')}">
         <i class="fa fa-home"
            aria-hidden="true"></i>
       </md-button>
       <md-button
            aria-label="fortress"
            ng-click="gameCtrl.toggleFortress()"
-           ng-class="{'md-primary': (gameCtrl.placement == 'fortress')}">
+           ng-class="{'md-raised': (gameCtrl.placement == 'fortress')}">
         <i class="fa fa-building"
            aria-hidden="true"></i>
       </md-button>
@@ -184,18 +186,33 @@
         <div class="stack"
              ng-repeat="stack in gameCtrl.stacks track by $index">
           <div>
-            <md-button aria-label="draw"
-                       ng-class="{'md-primary': gameCtrl.doShowLastCard($index)}"
-                       ng-disabled="gameCtrl.isDrawingCards"
-                       ng-click="gameCtrl.drawCard($index)">
-              <md-tooltip>Lấy bài</md-tooltip>
-              <i class="fa fa-hand-lizard-o"
-                 aria-hidden="true"></i>
-            </md-button>
-            <span class="md-caption"
-                  ng-if="gameCtrl.doShowLastCard($index)">
-              "{{gameCtrl.lastCard}}"
-            </span>
+            <div class="draw-row">
+              <md-button class="small-btn"
+                         aria-label="draw"
+                         ng-class="{'md-primary': gameCtrl.doShowLastCard($index)}"
+                         ng-disabled="gameCtrl.isDrawingCards"
+                         ng-click="gameCtrl.drawCard($index)">
+                <md-tooltip>Lấy bài</md-tooltip>
+                <i class="fa fa-hand-lizard-o"
+                   aria-hidden="true"></i>
+              </md-button>
+              <md-button class="small-btn"
+                         ng-if="gameCtrl.isGameStarted"
+                         aria-label="draw enemy"
+                         ng-class="{'md-primary': gameCtrl.doPlaceEnemy()}"
+                         ng-disabled="gameCtrl.isDrawingCards"
+                         ng-click="gameCtrl.placeEnemyCard($index)">
+                <md-tooltip>Đặt quân địch</md-tooltip>
+                <i class="fa fa-user-secret"
+                   aria-hidden="true"></i>
+                <i class="fa fa-hand-lizard-o"
+                   aria-hidden="true"></i>
+              </md-button>
+              <span class="md-caption"
+                    ng-if="gameCtrl.doShowLastCard($index)">
+                "{{gameCtrl.lastCard}}"
+              </span>
+            </div>
           </div>
           <md-button class="small-btn shuffle"
                      aria-label="shuffle"
@@ -222,11 +239,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <!-- Angular Material Library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+  <script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.js"></script>
   <script src="js/map.js"></script>  
   <script src="js/tile-model.js"></script>  
   <script src="js/tile-service.js"></script>  
-  <script src="js/game-controller.js"></script>  
+  <script src="js/game-controller.js"></script>
+  <script src="js/tile-sheet-controller.js"></script>  
   <script src="js/app.js"></script>
   
 </body>

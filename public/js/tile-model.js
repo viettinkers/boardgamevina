@@ -73,10 +73,6 @@ TileModel.prototype.getFaStyles = function() {
   return styles;
 };
 
-TileModel.prototype.nextColor = function() {
-  this.colorIndex = (this.colorIndex + 1) % this.colors.length;
-  this.updateSkins();
-};
 
 TileModel.prototype.discover = function() {
   if (!this.isDiscovered) {
@@ -91,9 +87,7 @@ TileModel.prototype.discover = function() {
 };
 
 TileModel.prototype.updateSkins = function() {
-  this.styles = {'grid-area': this.gridArea,
-      'background-color': this.colors[this.colorIndex].bg,
-      'color': this.colors[this.colorIndex].color};
+  this.styles = {'grid-area': this.gridArea};
 };
 
 TileModel.prototype.updatePlayerCount_ = function(prop, playerNum) {

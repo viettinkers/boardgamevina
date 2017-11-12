@@ -5,4 +5,7 @@ app.factory('tileService', function() {
 });
 
 app.controller('GameController',
-    ['$scope', '$element', '$timeout', 'tileService', GameController]);
+    ['$scope', '$element', '$timeout', '$mdBottomSheet', 'tileService', GameController]);
+
+app.controller('TileSheetController',
+    ['$scope', '$element', '$timeout', 'tile', TileSheetController]);

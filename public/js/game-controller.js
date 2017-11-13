@@ -83,9 +83,21 @@ GameController.prototype.drawCard = function(stackIndex) {
   if (this.isGameStarted) {
     this.placement = 'enemy';
   }
+  // Scroll to view.
+  var drawnTile = this.findTile_(this.lastCard);
+  if (drawnTile) {
+    $.find('.' + drawnTile.valueClass)[0].scrollIntoView();
+  }
 };
 
-GameController.prototype.drawEnemyCard = function(stackIndex) {
+GameController.prototype.findTile_ = function(card) {
+  return _.find(this.tiles_, function(tile) {
+    return tile.city == card;
+  });
+};
+
+// Deprecated
+GameController.prototype.placeEnemyCard = function(stackIndex) {
   this.drawCard(stackIndex);
   var hasTownOrFortress = false;
   var drawnTile = null;
@@ -128,20 +140,11 @@ GameController.prototype.placeTile = function(tile) {
           <md-list flex layout="row" layout-align="center center">
             <md-button
                  class="md-raised md-icon-button"
-                 aria-label="person">
-              <i class="fa fa-male"
-                 aria-hidden="true"></i>
-            </md-button>
-            <md-button
-                 class="md-raised md-primary md-icon-button"
-                 aria-label="person">
-              <i class="fa fa-male"
-                 aria-hidden="true"></i>
-            </md-button>
-            <md-button
-                 style="background-color: #2196F3;"
-                 class="md-raised md-primary md-icon-button"
-                 aria-label="person">
+                 aria-label="person"
+                 ng-click="tileSheetCtrl.clickBtn('person', $index)"
+                 ng-style="btn.styles"
+                 ng-repeat="btn in tileSheetCtrl.getBtns() track by $index"
+                 ng-class="{'md-primary': $index > 0}">
               <i class="fa fa-male"
                  aria-hidden="true"></i>
             </md-button>
@@ -149,41 +152,11 @@ GameController.prototype.placeTile = function(tile) {
           <md-list flex layout="row" layout-align="center center">
             <md-button
                  class="md-raised md-icon-button"
-                 aria-label="person">
-              <i class="fa fa-user-secret"
-                 aria-hidden="true"></i>
-            </md-button>
-            <md-button
-                 class="md-raised md-primary md-icon-button"
-                 aria-label="person">
-              <i class="fa fa-user-secret"
-                 aria-hidden="true"></i>
-            </md-button>
-            <md-button
-                 class="md-raised md-primary md-icon-button"
-                 aria-label="person">
-              2
-              <i class="fa fa-user-secret"
-                 aria-hidden="true"></i>
-            </md-button>
-            <md-button
-                 class="md-raised md-primary md-icon-button"
-                 aria-label="person">
-              3
-              <i class="fa fa-user-secret"
-                 aria-hidden="true"></i>
-            </md-button>
-            <md-button
-                 class="md-raised md-primary md-icon-button"
-                 aria-label="person">
-              4
-              <i class="fa fa-user-secret"
-                 aria-hidden="true"></i>
-            </md-button>
-            <md-button
-                 class="md-raised md-primary md-icon-button"
-                 aria-label="person">
-              5
+                 aria-label="enemy"
+                 ng-click="tileSheetCtrl.clickBtn('enemy', $index)"
+                 ng-repeat="btn in [0, 1, 2, 3, 4, 5] track by $index"
+                 ng-class="{'md-primary': $index > 0}">
+              <span ng-if="$index > 1">{{$index}}</span>
               <i class="fa fa-user-secret"
                  aria-hidden="true"></i>
             </md-button>
@@ -191,20 +164,11 @@ GameController.prototype.placeTile = function(tile) {
           <md-list flex layout="row" layout-align="center center">
             <md-button
                  class="md-raised md-icon-button"
-                 aria-label="person">
-              <i class="fa fa-home"
-                 aria-hidden="true"></i>
-            </md-button>
-            <md-button
-                 class="md-raised md-primary md-icon-button"
-                 aria-label="person">
-              <i class="fa fa-home"
-                 aria-hidden="true"></i>
-            </md-button>
-            <md-button
-                 style="background-color: #2196F3;"
-                 class="md-raised md-primary md-icon-button"
-                 aria-label="person">
+                 aria-label="person"
+                 ng-click="tileSheetCtrl.clickBtn('town', $index)"
+                 ng-style="btn.styles"
+                 ng-repeat="btn in tileSheetCtrl.getBtns() track by $index"
+                 ng-class="{'md-primary': $index > 0}">
               <i class="fa fa-home"
                  aria-hidden="true"></i>
             </md-button>
@@ -212,28 +176,20 @@ GameController.prototype.placeTile = function(tile) {
           <md-list flex layout="row" layout-align="center center">
             <md-button
                  class="md-raised md-icon-button"
-                 aria-label="person">
-              <i class="fa fa-building"
-                 aria-hidden="true"></i>
-            </md-button>
-            <md-button
-                 class="md-raised md-primary md-icon-button"
-                 aria-label="person">
-              <i class="fa fa-building"
-                 aria-hidden="true"></i>
-            </md-button>
-            <md-button
-                 style="background-color: #2196F3;"
-                 class="md-raised md-primary md-icon-button"
-                 aria-label="person">
+                 aria-label="person"
+                 ng-click="tileSheetCtrl.clickBtn('fortress', $index)"
+                 ng-style="btn.styles"
+                 ng-repeat="btn in tileSheetCtrl.getBtns() track by $index"
+                 ng-class="{'md-primary': $index > 0}">
               <i class="fa fa-building"
                  aria-hidden="true"></i>
             </md-button>
           </md-list>
           <md-list flex layout="row" layout-align="center center">
             <md-button
+                 ng-click="tileSheetCtrl.clickBtn('clear', 0)"
                  class="md-raised"
-                 aria-label="person">
+                 aria-label="clear">
               Xóa
             </md-button>
           </md-list>
@@ -241,15 +197,20 @@ GameController.prototype.placeTile = function(tile) {
       </md-bottom-sheet>
       `,
       locals: {
-        tile: tile
+        tile: tile,
+        numPlayers: this.getNumPlayers(),
       },
       controller: 'TileSheetController as tileSheetCtrl'
-    });
+    }).then(this.onSheetClickCallback.bind(this, tile));
     return;
   }
 
-  tile.place(this.placement, this.getNumPlayers());
+  tile.advancePlacement(this.placement, this.getNumPlayers());
   this.updateResourceSurplus_();
+};
+
+GameController.prototype.onSheetClickCallback = function(tile, resp) {
+  tile.putPlacement(resp.placement, resp.count);
 };
 
 GameController.prototype.updateResourceSurplus_ = function() {

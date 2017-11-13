@@ -31,7 +31,7 @@
            ng-repeat="tile in gameCtrl.getTiles()"
            ng-style="tile.styles"
            ng-click="gameCtrl.placeTile(tile)"
-           class="box md-raised">
+           class="box md-raised {{tile.valueClass}}">
         <div class="resource"
              ng-if="tile.getFaStyles().length">
           <i class="fa"
@@ -197,7 +197,7 @@
                    aria-hidden="true"></i>
               </md-button>
               <md-button class="small-btn"
-                         ng-if="gameCtrl.isGameStarted"
+                         ng-if="false"
                          aria-label="draw enemy"
                          ng-class="{'md-primary': gameCtrl.doPlaceEnemy()}"
                          ng-disabled="gameCtrl.isDrawingCards"
@@ -241,6 +241,7 @@
   <!-- Angular Material Library -->
   <script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.js"></script>
   <script src="js/map.js"></script>  
+  <script src="js/constants.js"></script>  
   <script src="js/tile-model.js"></script>  
   <script src="js/tile-service.js"></script>  
   <script src="js/game-controller.js"></script>

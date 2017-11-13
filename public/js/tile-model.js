@@ -1,6 +1,7 @@
 
 TileModel = function(value, cells, neighbors, city) {
   this.value = value;
+  this.valueClass = 'tile-' + this.value;
 
   this.cells = cells;
 
@@ -90,7 +91,7 @@ TileModel.prototype.updateSkins = function() {
   this.styles = {'grid-area': this.gridArea};
 };
 
-TileModel.prototype.updatePlayerCount_ = function(prop, playerNum) {
+TileModel.prototype.advancePlayerCount_ = function(prop, playerNum) {
   var hasArg = 'has' + prop[0].toUpperCase() + prop.substr(1);
   if (!this.playerCount[prop]) {
     this.playerCount[prop] = 1;
@@ -106,7 +107,7 @@ TileModel.prototype.updatePlayerCount_ = function(prop, playerNum) {
   this[hasArg] = false;
 };
 
-TileModel.prototype.place = function(placement, playerNum) {
+TileModel.prototype.advancePlacement = function(placement, playerNum) {
   if (!this.isDiscovered && placement != 'enemy') {
     this.isDiscovered = true;
   }
@@ -116,19 +117,36 @@ TileModel.prototype.place = function(placement, playerNum) {
       this.enemies = 0;
     }
   } else if (placement == 'town') {
-    this.updatePlayerCount_('town', playerNum);
+    this.advancePlayerCount_('town', playerNum);
   } else if (placement == 'fortress') {
-    this.updatePlayerCount_('fortress', playerNum);
+    this.advancePlayerCount_('fortress', playerNum);
   } else if (placement == 'enemy') {
     this.enemies = (this.enemies + 1) % 6;
   } else {
-    // Reset
-    this.isDiscovered = false; 
-    this.hasPerson = false;
-    this.enemies = 0;
-    this.hasTown = 0;
-    this.hasFortress = 0;
-    this.playerCount = {};
+    this.clearTile();
+  }
+  this.faStyles = this.getFaStyles();
+};
+
+TileModel.prototype.clearTile = function() {
+  this.isDiscovered = false; 
+  this.hasPerson = false;
+  this.enemies = 0;
+  this.hasTown = 0;
+  this.hasFortress = 0;
+  this.playerCount = {};
+};
+
+TileModel.prototype.putPlacement = function(placement, count) {
+  if (placement == 'clear') {
+    this.clearTile();
+  }
+  if (placement == 'enemy') {
+    this.enemies = count;
+  } else {
+    var hasArg = 'has' + placement[0].toUpperCase() + placement.substr(1);
+    this[hasArg] = !!count;
+    this.playerCount[placement] = count;
   }
   this.faStyles = this.getFaStyles();
 };

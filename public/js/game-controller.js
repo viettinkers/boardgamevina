@@ -86,7 +86,9 @@ GameController.prototype.drawCard = function(stackIndex) {
   // Scroll to view.
   var drawnTile = this.findTile_(this.lastCard);
   if (drawnTile) {
-    $.find('.' + drawnTile.valueClass)[0].scrollIntoView();
+    var el = $($.find('.' + drawnTile.valueClass));
+    el.focus();
+    el[0].scrollIntoView();
   }
 };
 

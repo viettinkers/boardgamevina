@@ -27,7 +27,6 @@
     </md-button>
     <div class="board-wrapper">
       <md-button
-           ng-class="{'md-primary': gameCtrl.doHighlight(tile)}"
            ng-repeat="tile in gameCtrl.getTiles()"
            ng-style="tile.styles"
            ng-click="gameCtrl.placeTile(tile)"

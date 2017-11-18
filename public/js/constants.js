@@ -8,3 +8,14 @@ BTN_BGCOLORS = [
   '#FF9800',
   '#795548'
 ];
+
+BTN_ACCCOLORS = [
+  '',
+  '#8C9EFF',
+  '#80D8FF',
+  '#A7FFEB',
+  '#CCFF90',
+  '#FFFF8D',
+  '#FFD180',
+  '#BCAAA4'
+];

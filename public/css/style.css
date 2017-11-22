@@ -60,12 +60,15 @@ body {
   flex-direction: row; }
 
 .controls-wrapper {
+  background: #fafafa;
   display: flex;
   flex-direction: column;
   margin-left: 8px;
   align-self: flex-start; }
   .controls-wrapper > .md-button {
     max-width: 120px; }
+  .controls-wrapper .add-res-btn {
+    width: 180px; }
   .controls-wrapper .small-btn {
     min-width: 60px;
     margin-right: 0;

@@ -253,3 +253,14 @@ GameController.prototype.doHighlight = function(tile) {
   return tile.city == this.lastCard;
 };
 
+GameController.prototype.addMultiRes = function(resource) {
+  if (resource.forestPlus) {
+    resource.forest += resource.forestPlus;
+  }
+  if (resource.fieldPlus) {
+    resource.field += resource.fieldPlus;
+  }
+  if (resource.mountainPlus) {
+    resource.mountain += resource.mountainPlus;
+  }
+};

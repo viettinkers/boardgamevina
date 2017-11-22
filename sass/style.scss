@@ -81,6 +81,7 @@ body {
 }
 
 .controls-wrapper {
+  background: rgb(250,250,250);
   display: flex;
   flex-direction: column;
   margin-left: 8px;
@@ -88,6 +89,10 @@ body {
 
   > .md-button {
     max-width: 120px;
+  }
+
+  .add-res-btn {
+    width: 180px;
   }
 
   .small-btn {

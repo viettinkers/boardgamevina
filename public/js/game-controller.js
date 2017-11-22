@@ -83,8 +83,11 @@ GameController.prototype.drawCard = function(stackIndex) {
   if (this.isGameStarted) {
     this.placement = 'enemy';
   }
-  // Scroll to view.
-  var drawnTile = this.findTile_(this.lastCard);
+  this.scrollCard_(this.lastCard);
+};
+
+GameController.prototype.scrollCard_ = function(card) {
+  var drawnTile = this.findTile_(card);
   if (drawnTile) {
     var el = $($.find('.' + drawnTile.valueClass));
     el.focus();
@@ -100,20 +103,23 @@ GameController.prototype.findTile_ = function(card) {
 
 // Deprecated
 GameController.prototype.placeEnemyCard = function(stackIndex) {
-  this.drawCard(stackIndex);
-  var hasTownOrFortress = false;
-  var drawnTile = null;
-  _.each(this.tiles_, function(tile) {
-    if (tile.city == this.lastCard) {
-      drawnTile = tile;
-      hasTownOrFortress = tile.hasTown || tile.hasFortress;
-      return false;
+  this.timeout_(function() {
+    this.drawCard(stackIndex);
+    var hasTownOrFortress = false;
+    var drawnTile = null;
+    _.each(this.tiles_, function(tile) {
+      if (tile.city == this.lastCard) {
+        drawnTile = tile;
+        hasTownOrFortress = tile.hasTown || tile.hasFortress;
+        return false;
+      }
+    }.bind(this));
+    if (!hasTownOrFortress && drawnTile) {
+      this.placement = 'enemy';
+      this.placeTile(drawnTile);
     }
-  }.bind(this));
-  if (!hasTownOrFortress && drawnTile) {
-    this.placement = 'enemy';
-    this.placeTile(drawnTile);
-  }
+    this.placement = '';
+  }.bind(this), 250);
 };
 
 GameController.prototype.shuffleCards = function(stackIndex) {
@@ -131,6 +137,8 @@ GameController.prototype.doShowLastCard = function(stackIndex) {
 };
 
 GameController.prototype.placeTile = function(tile) {
+  var lastScrollLeft = document.body.scrollLeft;
+  var lastScrollTop = document.body.scrollTop;
   if (!this.placement) {
     this.mdBottomSheet_.show({
       template: `
@@ -203,7 +211,11 @@ GameController.prototype.placeTile = function(tile) {
         numPlayers: this.getNumPlayers(),
       },
       controller: 'TileSheetController as tileSheetCtrl'
-    }).then(this.onSheetClickCallback.bind(this, tile));
+    }).then(function(resp) {
+      this.onSheetClickCallback(tile, resp);
+      document.body.scrollLeft = lastScrollLeft;
+      document.body.scrollTop = lastScrollTop;
+    }.bind(this));
     return;
   }
 
@@ -213,6 +225,7 @@ GameController.prototype.placeTile = function(tile) {
 
 GameController.prototype.onSheetClickCallback = function(tile, resp) {
   tile.putPlacement(resp.placement, resp.count);
+  //this.scrollCard_(tile.city);
 };
 
 GameController.prototype.updateResourceSurplus_ = function() {

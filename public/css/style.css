@@ -1,11 +1,22 @@
 body {
+  overflow: hidden; }
+
+.game-wrapper {
+  overflow: scroll;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+
+.wrapper {
   background: white;
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   align-items: center;
-  padding: 40px 0;
-  min-width: 860px;
-  min-height: 1000px; }
+  padding: 40px;
+  width: 1000px;
+  height: 1000px; }
 
 @keyframes jumping {
   0% {
@@ -51,11 +62,12 @@ body {
 .controls-wrapper {
   display: flex;
   flex-direction: column;
-  margin-left: 8px; }
+  margin-left: 8px;
+  align-self: flex-start; }
   .controls-wrapper > .md-button {
     max-width: 120px; }
   .controls-wrapper .small-btn {
-    min-width: 40px;
+    min-width: 60px;
     margin-right: 0;
     margin-left: 2px; }
   .controls-wrapper .fa-times {
@@ -106,4 +118,10 @@ body {
   opacity: .5; }
 
 md-bottom-sheet {
-  position: fixed; }
+  position: fixed;
+  -webkit-backface-visibility: hidden; }
+
+md-backdrop,
+md-backdrop.md-opaque {
+  -webkit-transition: none;
+  transition: none; }

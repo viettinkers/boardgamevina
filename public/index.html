@@ -14,215 +14,216 @@
       href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
 </head>
 <body ng-app="BlankApp" ng-cloak>
-
-  <div ng-controller="GameController as gameCtrl"
-       class="wrapper"
-       ng-class="{'winning': gameCtrl.isWinning}">
-    <md-button aria-label="Restart"
-               class="reset"
-               ng-click="gameCtrl.restart()">
-      <md-tooltip>Tái sinh</md-tooltip>
-      <i class="fa fa-refresh"
-         aria-hidden="true"></i>
-    </md-button>
-    <div class="board-wrapper">
-      <md-button
-           ng-repeat="tile in gameCtrl.getTiles()"
-           ng-style="tile.styles"
-           ng-click="gameCtrl.placeTile(tile)"
-           class="box md-raised {{tile.valueClass}}">
-        <div class="resource"
-             ng-if="tile.getFaStyles().length">
-          <i class="fa"
-             aria-hidden="true"
-             ng-repeat="faStyle in tile.faStyles"
-             ng-class="faStyle.style">
-            <span class="annotate"
-                  ng-if="faStyle.playerCount && gameCtrl.getNumPlayers() > 1">
-              {{faStyle.playerCount}}
-            </span>    
-          </i>
-        </div>
-        {{tile.city}} 
-      </md-button>
-    </div>
-    <div class="controls-wrapper">
-      <md-button
-           aria-label="placement"
-           ng-click="gameCtrl.resetPlacement()">
-        <i class="fa fa-mouse-pointer"
+  <div class="game-wrapper">
+    <div ng-controller="GameController as gameCtrl"
+         class="wrapper"
+         ng-class="{'winning': gameCtrl.isWinning}">
+      <md-button aria-label="Restart"
+                 class="reset"
+                 ng-if="false"
+                 ng-click="gameCtrl.restart()">
+        <md-tooltip>Tái sinh</md-tooltip>
+        <i class="fa fa-refresh"
            aria-hidden="true"></i>
       </md-button>
-      <md-button
-           aria-label="person"
-           ng-click="gameCtrl.togglePerson()"
-           ng-class="{'md-raised': (gameCtrl.placement == 'person')}">
-        <i class="fa fa-male"
-           aria-hidden="true"></i>
-      </md-button>
-      <md-button
-           aria-label="enemy"
-           ng-click="gameCtrl.toggleEnemy()"
-           ng-class="{'md-raised': (gameCtrl.placement == 'enemy')}">
-        <i class="fa fa-user-secret"
-           aria-hidden="true"></i>
-      </md-button>
-      <md-button
-           aria-label="town"
-           ng-click="gameCtrl.toggleTown()"
-           ng-class="{'md-raised': (gameCtrl.placement == 'town')}">
-        <i class="fa fa-home"
-           aria-hidden="true"></i>
-      </md-button>
-      <md-button
-           aria-label="fortress"
-           ng-click="gameCtrl.toggleFortress()"
-           ng-class="{'md-raised': (gameCtrl.placement == 'fortress')}">
-        <i class="fa fa-building"
-           aria-hidden="true"></i>
-      </md-button>
-      <div ng-repeat="resource in gameCtrl.resources"
-           class="resource-panel">
-        <div class="resource-row">
-          <md-button class="small-btn"
-                     aria-label="reduce resource"
-                     ng-click="gameCtrl.minusResource(resource, 'forest')">
-            <i class="fa fa-minus-square-o"
-               aria-hidden="true"></i>
-          </md-button>
-          <span>
-            <i class="fa fa-tree"
-               aria-hidden="true"></i>
-            <i class="fa fa-times"
-               aria-hidden="true"></i>
-            {{resource.forest}}
-          </span>
-          <md-button class="small-btn"
-                     aria-label="add resource"
-                     ng-click="gameCtrl.plusResource(resource, 'forest')">
-            <i class="fa fa-plus-square-o"
-               aria-hidden="true"></i>
-          </md-button>
-          <span ng-if="resource.forestPlus">
-            <i class="fa fa-home"
-               aria-hidden="true"></i>
-            {{resource.forestPlus}}
-          </span>
-        </div>
-        <div class="resource-row">
-          <md-button class="small-btn"
-                     aria-label="reduce resource"
-                     ng-click="gameCtrl.minusResource(resource, 'field')">
-            <i class="fa fa-minus-square-o"
-               aria-hidden="true"></i>
-          </md-button>
-          <span>
-            <i class="fa fa-pagelines"
-               aria-hidden="true"></i>
-            <i class="fa fa-times"
-               aria-hidden="true"></i>
-            {{resource.field}}
-          </span>
-          <md-button class="small-btn"
-                     aria-label="add resource"
-                     ng-click="gameCtrl.plusResource(resource, 'field')">
-            <i class="fa fa-plus-square-o"
-               aria-hidden="true"></i>
-          </md-button>
-          <span ng-if="resource.fieldPlus">
-            <i class="fa fa-home"
-               aria-hidden="true"></i>
-            {{resource.fieldPlus}}
-          </span>
-        </div>
-        <div class="resource-row">
-          <md-button class="small-btn"
-                     aria-label="reduce resource"
-                     ng-click="gameCtrl.minusResource(resource, 'mountain')">
-            <i class="fa fa-minus-square-o"
-               aria-hidden="true"></i>
-          </md-button>
-          <span>
-            <i class="fa fa-cubes"
-               aria-hidden="true"></i>
-            <i class="fa fa-times"
-               aria-hidden="true"></i>
-            {{resource.mountain}}
-          </span>
-          <md-button class="small-btn"
-                     aria-label="add resource"
-                     ng-click="gameCtrl.plusResource(resource, 'mountain')">
-            <i class="fa fa-plus-square-o"
-               aria-hidden="true"></i>
-          </md-button>
-          <span ng-if="resource.mountainPlus">
-            <i class="fa fa-home"
-               aria-hidden="true"></i>
-            {{resource.mountainPlus}}
-          </span>
-        </div>
-      </div>
-      <div class="players">
+      <div class="board-wrapper">
         <md-button
-             class="player-btn"
-             aria-label="thêm người"
-             ng-click="gameCtrl.addPlayer()">
-          <md-tooltip>Thêm người chơi</md-tooltip>
-          <i class="fa fa-male"
-             aria-hidden="true"></i>+
-        </md-button>
-        <md-button
-             class="player-btn"
-             aria-label="bớt người"
-             ng-if="gameCtrl.resources.length > 1"
-             ng-click="gameCtrl.removePlayer()">
-          <md-tooltip>Bớt người chơi</md-tooltip>
-          <i class="fa fa-male"
-             aria-hidden="true"></i>-
-        </md-button>
-      </div>
-      <div class="card-stacks">
-        <div class="stack"
-             ng-repeat="stack in gameCtrl.stacks track by $index">
-          <div>
-            <div class="draw-row">
-              <md-button class="small-btn"
-                         aria-label="draw"
-                         ng-class="{'md-primary': gameCtrl.doShowLastCard($index)}"
-                         ng-disabled="gameCtrl.isDrawingCards"
-                         ng-click="gameCtrl.drawCard($index)">
-                <md-tooltip>Lấy bài</md-tooltip>
-                <i class="fa fa-hand-lizard-o"
-                   aria-hidden="true"></i>
-              </md-button>
-              <md-button class="small-btn"
-                         ng-if="false"
-                         aria-label="draw enemy"
-                         ng-class="{'md-primary': gameCtrl.doPlaceEnemy()}"
-                         ng-disabled="gameCtrl.isDrawingCards"
-                         ng-click="gameCtrl.placeEnemyCard($index)">
-                <md-tooltip>Đặt quân địch</md-tooltip>
-                <i class="fa fa-user-secret"
-                   aria-hidden="true"></i>
-                <i class="fa fa-hand-lizard-o"
-                   aria-hidden="true"></i>
-              </md-button>
-              <span class="md-caption"
-                    ng-if="gameCtrl.doShowLastCard($index)">
-                "{{gameCtrl.lastCard}}"
-              </span>
-            </div>
+             ng-repeat="tile in gameCtrl.getTiles()"
+             ng-style="tile.styles"
+             ng-click="gameCtrl.placeTile(tile)"
+             class="box md-raised {{tile.valueClass}}">
+          <div class="resource"
+               ng-if="tile.getFaStyles().length">
+            <i class="fa"
+               aria-hidden="true"
+               ng-repeat="faStyle in tile.faStyles"
+               ng-class="faStyle.style">
+              <span class="annotate"
+                    ng-if="faStyle.playerCount && gameCtrl.getNumPlayers() > 1">
+                {{faStyle.playerCount}}
+              </span>    
+            </i>
           </div>
-          <md-button class="small-btn shuffle"
-                     aria-label="shuffle"
-                     ng-click="gameCtrl.shuffleCards($index)">
-            <md-tooltip>Xáo bài</md-tooltip>
-            <i class="fa fa-refresh"
-               aria-hidden="true"></i>
+          {{tile.city}} 
+        </md-button>
+      </div>
+      <div class="controls-wrapper">
+        <md-button
+             aria-label="placement"
+             ng-click="gameCtrl.resetPlacement()">
+          <i class="fa fa-mouse-pointer"
+             aria-hidden="true"></i>
+        </md-button>
+        <md-button
+             aria-label="person"
+             ng-click="gameCtrl.togglePerson()"
+             ng-class="{'md-raised': (gameCtrl.placement == 'person')}">
+          <i class="fa fa-male"
+             aria-hidden="true"></i>
+        </md-button>
+        <md-button
+             aria-label="enemy"
+             ng-click="gameCtrl.toggleEnemy()"
+             ng-class="{'md-raised': (gameCtrl.placement == 'enemy')}">
+          <i class="fa fa-user-secret"
+             aria-hidden="true"></i>
+        </md-button>
+        <md-button
+             aria-label="town"
+             ng-click="gameCtrl.toggleTown()"
+             ng-class="{'md-raised': (gameCtrl.placement == 'town')}">
+          <i class="fa fa-home"
+             aria-hidden="true"></i>
+        </md-button>
+        <md-button
+             aria-label="fortress"
+             ng-click="gameCtrl.toggleFortress()"
+             ng-class="{'md-raised': (gameCtrl.placement == 'fortress')}">
+          <i class="fa fa-building"
+             aria-hidden="true"></i>
+        </md-button>
+        <div ng-repeat="resource in gameCtrl.resources"
+             class="resource-panel">
+          <div class="resource-row">
+            <md-button class="small-btn"
+                       aria-label="reduce resource"
+                       ng-click="gameCtrl.minusResource(resource, 'forest')">
+              <i class="fa fa-minus-square-o"
+                 aria-hidden="true"></i>
+            </md-button>
+            <span>
+              <i class="fa fa-tree"
+                 aria-hidden="true"></i>
+              <i class="fa fa-times"
+                 aria-hidden="true"></i>
+              {{resource.forest}}
+            </span>
+            <md-button class="small-btn"
+                       aria-label="add resource"
+                       ng-click="gameCtrl.plusResource(resource, 'forest')">
+              <i class="fa fa-plus-square-o"
+                 aria-hidden="true"></i>
+            </md-button>
+            <span ng-if="resource.forestPlus">
+              <i class="fa fa-home"
+                 aria-hidden="true"></i>
+              {{resource.forestPlus}}
+            </span>
+          </div>
+          <div class="resource-row">
+            <md-button class="small-btn"
+                       aria-label="reduce resource"
+                       ng-click="gameCtrl.minusResource(resource, 'field')">
+              <i class="fa fa-minus-square-o"
+                 aria-hidden="true"></i>
+            </md-button>
+            <span>
+              <i class="fa fa-pagelines"
+                 aria-hidden="true"></i>
+              <i class="fa fa-times"
+                 aria-hidden="true"></i>
+              {{resource.field}}
+            </span>
+            <md-button class="small-btn"
+                       aria-label="add resource"
+                       ng-click="gameCtrl.plusResource(resource, 'field')">
+              <i class="fa fa-plus-square-o"
+                 aria-hidden="true"></i>
+            </md-button>
+            <span ng-if="resource.fieldPlus">
+              <i class="fa fa-home"
+                 aria-hidden="true"></i>
+              {{resource.fieldPlus}}
+            </span>
+          </div>
+          <div class="resource-row">
+            <md-button class="small-btn"
+                       aria-label="reduce resource"
+                       ng-click="gameCtrl.minusResource(resource, 'mountain')">
+              <i class="fa fa-minus-square-o"
+                 aria-hidden="true"></i>
+            </md-button>
+            <span>
+              <i class="fa fa-cubes"
+                 aria-hidden="true"></i>
+              <i class="fa fa-times"
+                 aria-hidden="true"></i>
+              {{resource.mountain}}
+            </span>
+            <md-button class="small-btn"
+                       aria-label="add resource"
+                       ng-click="gameCtrl.plusResource(resource, 'mountain')">
+              <i class="fa fa-plus-square-o"
+                 aria-hidden="true"></i>
+            </md-button>
+            <span ng-if="resource.mountainPlus">
+              <i class="fa fa-home"
+                 aria-hidden="true"></i>
+              {{resource.mountainPlus}}
+            </span>
+          </div>
+        </div>
+        <div class="players">
+          <md-button
+               class="player-btn"
+               aria-label="thêm người"
+               ng-click="gameCtrl.addPlayer()">
+            <md-tooltip>Thêm người chơi</md-tooltip>
+            <i class="fa fa-male"
+               aria-hidden="true"></i>+
           </md-button>
-          <div class="card-wrapper"
-               ng-repeat="card in gameCtrl.stacks[$index]">
-            <div class="card"></div>
+          <md-button
+               class="player-btn"
+               aria-label="bớt người"
+               ng-if="gameCtrl.resources.length > 1"
+               ng-click="gameCtrl.removePlayer()">
+            <md-tooltip>Bớt người chơi</md-tooltip>
+            <i class="fa fa-male"
+               aria-hidden="true"></i>-
+          </md-button>
+        </div>
+        <div class="card-stacks">
+          <div class="stack"
+               ng-repeat="stack in gameCtrl.stacks track by $index">
+            <div>
+              <div class="draw-row">
+                <md-button class="small-btn"
+                           aria-label="draw"
+                           ng-class="{'md-primary': gameCtrl.doShowLastCard($index)}"
+                           ng-disabled="gameCtrl.isDrawingCards"
+                           ng-click="gameCtrl.drawCard($index)">
+                  <md-tooltip>Lấy bài</md-tooltip>
+                  <i class="fa fa-hand-lizard-o"
+                     aria-hidden="true"></i>
+                </md-button>
+                <md-button class="small-btn"
+                           aria-label="draw enemy"
+                           ng-class="{'md-primary': gameCtrl.doPlaceEnemy()}"
+                           ng-disabled="gameCtrl.isDrawingCards"
+                           ng-click="gameCtrl.placeEnemyCard($index)">
+                  <md-tooltip>Đặt quân địch</md-tooltip>
+                  <i class="fa fa-user-secret"
+                     aria-hidden="true"></i>
+                  <i class="fa fa-hand-lizard-o"
+                     aria-hidden="true"></i>
+                </md-button>
+                <span class="md-caption"
+                      ng-if="gameCtrl.doShowLastCard($index)">
+                  "{{gameCtrl.lastCard}}"
+                </span>
+              </div>
+            </div>
+            <md-button class="small-btn shuffle"
+                       aria-label="shuffle"
+                       ng-click="gameCtrl.shuffleCards($index)">
+              <md-tooltip>Xáo bài</md-tooltip>
+              <i class="fa fa-refresh"
+                 aria-hidden="true"></i>
+            </md-button>
+            <div class="card-wrapper"
+                 ng-repeat="card in gameCtrl.stacks[$index]">
+              <div class="card"></div>
+            </div>
           </div>
         </div>
       </div>

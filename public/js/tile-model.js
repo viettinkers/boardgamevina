@@ -141,6 +141,9 @@ TileModel.prototype.putPlacement = function(placement, count) {
   if (placement == 'clear') {
     this.clearTile();
   }
+  if (!this.isDiscovered && placement != 'enemy') {
+    this.isDiscovered = true;
+  }
   if (placement == 'enemy') {
     this.enemies = count;
   } else {

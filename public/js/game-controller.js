@@ -125,7 +125,7 @@ GameController.prototype.placeEnemyCard = function(stackIndex) {
 
 GameController.prototype.placeEnemyCardLastStack = function() {
   this.placeEnemyCard(this.currentStackIndex);
-  if (this.stacks[this.currentStackIndex].length) {
+  if (!this.stacks[this.currentStackIndex].length) {
     this.currentStackIndex = 1 - this.currentStackIndex;
   }
 };

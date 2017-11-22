@@ -213,8 +213,6 @@ GameController.prototype.placeTile = function(tile) {
       controller: 'TileSheetController as tileSheetCtrl'
     }).then(function(resp) {
       this.onSheetClickCallback(tile, resp);
-//      document.body.scrollLeft = lastScrollLeft;
-//      document.body.scrollTop = lastScrollTop;
     }.bind(this));
     return;
   }
@@ -224,9 +222,16 @@ GameController.prototype.placeTile = function(tile) {
 };
 
 GameController.prototype.onSheetClickCallback = function(tile, resp) {
+  if (resp.placement == 'person' && resp.count) {
+    _.each(this.tiles_, function(tile) {
+      if ((tile.hasPerson && this.getNumPlayers() == 1) ||
+          tile.persons[resp.count]) {
+        tile.putPlacement('person', 0);
+      }
+    }.bind(this));
+  }
   tile.putPlacement(resp.placement, resp.count);
   this.updateResourceSurplus_();
-  //this.scrollCard_(tile.city);
 };
 
 GameController.prototype.updateResourceSurplus_ = function() {

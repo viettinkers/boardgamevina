@@ -37,7 +37,8 @@
             <i class="fa"
                aria-hidden="true"
                ng-repeat="faStyle in tile.faStyles"
-               ng-class="faStyle.style">
+               ng-class="faStyle.style"
+               style="color: {{gameCtrl.getNumPlayers() > 1 ? faStyle.color : '';}}">
               <span class="annotate"
                     ng-if="faStyle.playerCount && gameCtrl.getNumPlayers() > 1">
                 {{faStyle.playerCount}}

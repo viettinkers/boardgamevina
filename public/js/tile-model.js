@@ -38,6 +38,8 @@ TileModel = function(value, cells, neighbors, city) {
 
   this.playerCount = {};
 
+  this.persons = {};
+
   this.updateSkins();
 
   this.faStyles = this.getFaStyles();
@@ -59,12 +61,31 @@ TileModel.prototype.getFaStyles = function() {
     styles.push({style: TileModel.RESOURCE_TO_FA[this.resource]});
   }
   if (this.hasPerson) {
-    styles.push({style: TileModel.RESOURCE_TO_FA['person']});
+    if (JSON.stringify(this.persons) == '{}') {
+      styles.push({style: TileModel.RESOURCE_TO_FA['person'],
+          color: BTN_ACCCOLORS[1]});
+    } else {
+      var keys = Object.keys(this.persons);
+      for (var i = 0; i < keys.length; i++) {
+        if (!this.persons[keys[i]]) {
+          continue;
+        }
+        styles.push({
+            style: TileModel.RESOURCE_TO_FA['person'],
+            color: BTN_ACCCOLORS[keys[i]]});
+      }
+    }
   }
   if (this.hasFortress) {
-    styles.push({style: TileModel.RESOURCE_TO_FA['fortress'], playerCount: this.playerCount['fortress']});
+    styles.push({
+        style: TileModel.RESOURCE_TO_FA['fortress'],
+        playerCount: this.playerCount['fortress'],
+        color: BTN_ACCCOLORS[this.playerCount['fortress']]});
   } else if (this.hasTown) {
-    styles.push({style: TileModel.RESOURCE_TO_FA['town'], playerCount: this.playerCount['town']});
+    styles.push({
+        style: TileModel.RESOURCE_TO_FA['town'],
+        playerCount: this.playerCount['town'],
+        color: BTN_ACCCOLORS[this.playerCount['town']]});
   }
   if (this.enemies) {
     for (var i = 0; i < this.enemies; i++) {
@@ -112,7 +133,9 @@ TileModel.prototype.advancePlacement = function(placement, playerNum) {
     this.isDiscovered = true;
   }
   if (placement == 'person') {
-    this.hasPerson = !this.hasPerson;
+    this.advancePlayerCount_('person', playerNum);
+    this.persons = {};
+    this.persons[this.playerCount['person']] = true;
     if (this.hasPerson) {
       this.enemies = 0;
     }
@@ -135,6 +158,7 @@ TileModel.prototype.clearTile = function() {
   this.hasTown = 0;
   this.hasFortress = 0;
   this.playerCount = {};
+  this.persons = {};
 };
 
 TileModel.prototype.putPlacement = function(placement, count) {
@@ -150,6 +174,14 @@ TileModel.prototype.putPlacement = function(placement, count) {
     var hasArg = 'has' + placement[0].toUpperCase() + placement.substr(1);
     this[hasArg] = !!count;
     this.playerCount[placement] = count;
+  }
+
+  if (placement == 'person') {
+    if (count == 0) {
+      this.persons = {};
+    } else {
+      this.persons[count] = true;
+    }
   }
   this.faStyles = this.getFaStyles();
 };

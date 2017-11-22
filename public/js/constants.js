@@ -11,11 +11,11 @@ BTN_BGCOLORS = [
 
 BTN_ACCCOLORS = [
   '',
-  '#8C9EFF',
-  '#80D8FF',
-  '#A7FFEB',
-  '#CCFF90',
-  '#FFFF8D',
-  '#FFD180',
-  '#BCAAA4'
+  '#283593',
+  '#0277BD',
+  '#00695C',
+  '#558B2F',
+  '#F9A825',
+  '#EF6C00',
+  '#4E342E'
 ];

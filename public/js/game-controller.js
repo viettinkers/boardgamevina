@@ -213,8 +213,8 @@ GameController.prototype.placeTile = function(tile) {
       controller: 'TileSheetController as tileSheetCtrl'
     }).then(function(resp) {
       this.onSheetClickCallback(tile, resp);
-      document.body.scrollLeft = lastScrollLeft;
-      document.body.scrollTop = lastScrollTop;
+//      document.body.scrollLeft = lastScrollLeft;
+//      document.body.scrollTop = lastScrollTop;
     }.bind(this));
     return;
   }
@@ -225,6 +225,7 @@ GameController.prototype.placeTile = function(tile) {
 
 GameController.prototype.onSheetClickCallback = function(tile, resp) {
   tile.putPlacement(resp.placement, resp.count);
+  this.updateResourceSurplus_();
   //this.scrollCard_(tile.city);
 };
 
@@ -234,6 +235,12 @@ GameController.prototype.updateResourceSurplus_ = function() {
     resource.fieldPlus = 0;
     resource.mountainPlus = 0;
     var discoveredTowns = 0;
+    _.each(this.tiles_, function(tile) {
+      if ((tile.hasPerson && this.getNumPlayers() == 1) ||
+          tile.persons[resourceIndex + 1]) {
+        resource[tile.resource + 'Plus']++;
+      }
+    }.bind(this));
     _.each(this.tiles_, function(tile) {
       if ((tile.playerCount['town'] && tile.playerCount['town'] == resourceIndex + 1) ||
           (tile.playerCount['fortress'] && tile.playerCount['fortress'] == resourceIndex + 1)) {
@@ -263,4 +270,7 @@ GameController.prototype.addMultiRes = function(resource) {
   if (resource.mountainPlus) {
     resource.mountain += resource.mountainPlus;
   }
+  resource.forestPlus = 0;
+  resource.fieldPlus = 0;
+  resource.mountainPlus = 0;
 };

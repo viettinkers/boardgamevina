@@ -81,7 +81,8 @@ TileModel.prototype.getFaStyles = function() {
         style: TileModel.RESOURCE_TO_FA['fortress'],
         playerCount: this.playerCount['fortress'],
         color: BTN_ACCCOLORS[this.playerCount['fortress']]});
-  } else if (this.hasTown) {
+  }
+  if (this.hasTown) {
     styles.push({
         style: TileModel.RESOURCE_TO_FA['town'],
         playerCount: this.playerCount['town'],

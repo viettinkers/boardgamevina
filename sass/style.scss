@@ -179,6 +179,7 @@ md-backdrop.md-opaque {
 }
 
 .overlay-controls {
+  transition: all 0.2s ease;
   position: fixed;
   margin: 16px;
   bottom: 0;

@@ -1,0 +1,16 @@
+[debug] [2017-11-22T18:29:25.220Z] ----------------------------------------------------------------------
+[debug] [2017-11-22T18:29:25.222Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\advnm\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase deploy
+[debug] [2017-11-22T18:29:25.222Z] CLI Version:   3.15.2
+[debug] [2017-11-22T18:29:25.222Z] Platform:      win32
+[debug] [2017-11-22T18:29:25.222Z] Node Version:  v8.9.1
+[debug] [2017-11-22T18:29:25.223Z] Time:          Wed Nov 22 2017 10:29:25 GMT-0800 (Pacific Standard Time)
+[debug] [2017-11-22T18:29:25.223Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-11-22T18:29:25.233Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-11-22T18:29:25.233Z] > authorizing via signed-in user
+[debug] [2017-11-22T18:29:25.235Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/boardgamevina-84948  
+ Wed Nov 22 2017 10:29:25 GMT-0800 (Pacific Standard Time)
+[debug] [2017-11-22T18:29:27.973Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-22T18:29:27.973Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/boardgamevina-84948/tokens  
+ Wed Nov 22 2017 10:29:27 GMT-0800 (Pacific Standard Time)
+[debug] [2017-11-22T18:29:34.166Z] <<< HTTP RESPONSE 200

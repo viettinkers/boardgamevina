@@ -27,9 +27,9 @@ GameController.prototype.getTiles = function() {
 
 GameController.prototype.addPlayer = function() {
   this.resources.push({
-    forest: 0,
-    mountain: 0,
-    field: 0
+    forest: 3,
+    mountain: 3,
+    field: 3
   });
 };
 
@@ -118,6 +118,7 @@ GameController.prototype.placeEnemyCard = function(stackIndex) {
       this.placement = 'enemy';
       this.placeTile(drawnTile);
     }
+    this.isGameStarted = true;
     this.placement = '';
   }.bind(this), 250);
 };
@@ -238,6 +239,25 @@ GameController.prototype.onSheetClickCallback = function(tile, resp) {
     }.bind(this));
   }
   tile.putPlacement(resp.placement, resp.count);
+  if (resp.count > 0 && this.isGameStarted) {
+    var resource = this.resources[resp.count - 1];
+    if (tile.enemies && resp.placement == 'person') {
+      resource.mountain -= tile.enemies;
+     tile.putPlacement('enemy', 0);
+    }
+    if (resp.placement == 'person') {
+      resource.field -= 1;
+    }
+    if (resp.placement == 'town') {
+      resource.forest -= 3;
+    }
+    if (resp.placement == 'fortress') {
+      resource.mountain -= 3;
+    }
+  }
+  if (resp.placement == 'enemy') {
+    this.isGameStarted = true;
+  }
   this.updateResourceSurplus_();
 };
 
@@ -254,9 +274,10 @@ GameController.prototype.updateResourceSurplus_ = function() {
       }
     }.bind(this));
     _.each(this.tiles_, function(tile) {
-      if ((tile.playerCount['town'] && tile.playerCount['town'] == resourceIndex + 1) ||
-          (tile.playerCount['fortress'] && tile.playerCount['fortress'] == resourceIndex + 1)) {
-        resource[tile.resource + 'Plus']++;
+      if (tile.playerCount['fortress'] && tile.playerCount['fortress'] == resourceIndex + 1) {
+        resource[tile.resource + 'Plus']+=2;
+      } else if (tile.playerCount['town'] && tile.playerCount['town'] == resourceIndex + 1) {
+        resource[tile.resource + 'Plus']+=1;
       }
       if (tile.isDiscovered) {
         discoveredTowns++;

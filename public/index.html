@@ -245,6 +245,39 @@
           </div>
         </div>
       </div>
+      <div class="overlay-controls"
+           ng-if="gameCtrl.getNumPlayers()==1">
+        <div ng-init="resource=gameCtrl.resources[0]">
+          <md-button class="mini-resource"
+                     aria-label="mini resources"
+                     ng-click="gameCtrl.addMultiRes(resource)">
+            {{resource.forest}} <span ng-if="resource.forestPlus">({{resource.forestPlus}})</span>
+            <i class="fa fa-tree"
+               aria-hidden="true"></i>
+            &nbsp;&nbsp;{{resource.field}} <span ng-if="resource.fieldPlus">({{resource.fieldPlus}})</span>
+            <i class="fa fa-pagelines"
+               aria-hidden="true"></i>
+            &nbsp;&nbsp;{{resource.mountain}} <span ng-if="resource.mountainPlus">({{resource.mountainPlus}})</span>
+            <i class="fa fa-cubes"
+               aria-hidden="true"></i>
+            <i ng-if="resource.forestPlus || resource.fieldPlus || resource.mountainPlus"
+               class="fa fa-plus-square-o"
+               aria-hidden="true"></i>
+          </md-button>
+        </div>
+        <div>
+          <md-button aria-label="draw enemy"
+                     ng-class="{'md-primary': gameCtrl.doPlaceEnemy()}"
+                     ng-disabled="gameCtrl.isDrawingCards"
+                     ng-click="gameCtrl.placeEnemyCardLastStack()">
+            <md-tooltip>Đặt quân địch</md-tooltip>
+            <i class="fa fa-user-secret"
+               aria-hidden="true"></i>
+            <i class="fa fa-hand-lizard-o"
+               aria-hidden="true"></i>
+          </md-button>
+        </div>
+      </div>
     </div>
   </div>
   

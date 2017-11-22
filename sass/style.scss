@@ -177,3 +177,18 @@ md-backdrop.md-opaque {
   -webkit-transition: none;
   transition: none;
 }
+
+.overlay-controls {
+  position: fixed;
+  margin: 16px;
+  bottom: 0;
+  right: 0;
+  background: rgba(235, 233, 235, 0.8);
+  border-radius: 2px;
+}
+
+@media only screen and (min-device-width: 480px) {
+  .overlay-controls {
+    display: none;
+  }
+}

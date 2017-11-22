@@ -12,6 +12,7 @@ GameController.prototype.restart = function() {
   this.resources = [];
   this.placement = '';
   this.stacks = [this.tileService_.generateCards(), []];
+  this.currentStackIndex = 0;
   this.lastCard = '';
   this.lastDrawnStack_ = null;
   this.isDrawingCards = false;
@@ -101,7 +102,6 @@ GameController.prototype.findTile_ = function(card) {
   });
 };
 
-// Deprecated
 GameController.prototype.placeEnemyCard = function(stackIndex) {
   this.timeout_(function() {
     this.drawCard(stackIndex);
@@ -120,6 +120,13 @@ GameController.prototype.placeEnemyCard = function(stackIndex) {
     }
     this.placement = '';
   }.bind(this), 250);
+};
+
+GameController.prototype.placeEnemyCardLastStack = function() {
+  this.placeEnemyCard(this.currentStackIndex);
+  if (this.stacks[this.currentStackIndex].length) {
+    this.currentStackIndex = 1 - this.currentStackIndex;
+  }
 };
 
 GameController.prototype.shuffleCards = function(stackIndex) {

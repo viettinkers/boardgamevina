@@ -40,6 +40,8 @@ TileModel = function(value, cells, neighbors, city) {
 
   this.persons = {};
 
+  this.neighborTiles = [];
+
   this.updateSkins();
 
   this.faStyles = this.getFaStyles();
@@ -161,6 +163,16 @@ TileModel.prototype.clearTile = function() {
   this.hasFortress = 0;
   this.playerCount = {};
   this.persons = {};
+  this.totalSurroundingEnemies = 0;
+};
+
+TileModel.prototype.clearPerson = function(index) {
+  delete this.persons[index];
+  if (JSON.stringify(this.persons) == '{}') {
+    this.hasPerson = false;
+    this.playerCount['person'] = 0;
+  }
+  this.faStyles = this.getFaStyles();
 };
 
 TileModel.prototype.putPlacement = function(placement, count) {
@@ -186,4 +198,23 @@ TileModel.prototype.putPlacement = function(placement, count) {
     }
   }
   this.faStyles = this.getFaStyles();
+  this.calculateSurroundingEnemies();
+  this.updateNeighbors();
+};
+
+TileModel.prototype.updateNeighbors = function() {
+  _.each(this.neighborTiles, function(tile) {
+    tile.calculateSurroundingEnemies();
+  }.bind(this));
+};
+
+TileModel.prototype.setNeighborTiles = function(neighborTiles) {
+  this.neighborTiles = neighborTiles;  
+};
+
+TileModel.prototype.calculateSurroundingEnemies = function() {
+  this.totalSurroundingEnemies = this.enemies;
+  _.each(this.neighborTiles, function(tile) {
+    this.totalSurroundingEnemies += tile.enemies;
+  }.bind(this));
 };

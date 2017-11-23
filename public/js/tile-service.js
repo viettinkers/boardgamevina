@@ -1,6 +1,7 @@
 
 TileService = function() {
   this.tileModels = [];
+  this.cityToTile = {};
   this.cards = [];
 
   _.each(Object.keys(mapTiles), function(key) {
@@ -10,6 +11,7 @@ TileService = function() {
 
 TileService.prototype.generateTiles = function() {
   this.tileModels = [];
+  this.cityToTile = {};
   _.each(Object.keys(mapTiles), function(key) {
     var model = new TileModel(
         mapTiles[key].value,
@@ -17,6 +19,15 @@ TileService.prototype.generateTiles = function() {
         mapTiles[key].neighbors,
         mapTiles[key].city);
     this.tileModels.push(model);
+    this.cityToTile[model.city] = model;
+  }.bind(this));
+
+  _.each(this.tileModels, function(tile) {
+    var neighborTiles = [];
+    _.each(tile.neighbors, function(neighborCity) {
+      neighborTiles.push(this.cityToTile[neighborCity]);
+    }.bind(this));
+    tile.setNeighborTiles(neighborTiles);
   }.bind(this));
   return this.tileModels;
 };

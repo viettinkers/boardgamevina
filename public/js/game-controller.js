@@ -11,13 +11,14 @@ GameController.prototype.restart = function() {
   this.tiles_ = this.tileService_.generateTiles();
   this.resources = [];
   this.placement = '';
-  this.stacks = [this.tileService_.generateCards().slice(0, 3), []];
+  this.stacks = [this.tileService_.generateCards(), []];
   this.currentStackIndex = 0;
   this.lastCard = '';
   this.lastDrawnStack_ = null;
   this.isDrawingCards = false;
   this.isGameStarted = false;
   this.isWinning = false;
+  this.highlightButton = '';
   this.addPlayer();
 };
 
@@ -111,16 +112,17 @@ GameController.prototype.drawAndPlaceEnemyCard = function(stackIndex) {
     this.drawCard(stackIndex);
     var hasTownOrFortress = false;
     var drawnTile = this.findTileByCity_(this.lastCard);
-    if (drawnTile) {
-      this.placement = 'enemy';
-      this.placeTile(drawnTile);
-      this.placement = '';
+    if (!drawnTile) {
+      return;
     }
+    drawnTile.advancePlacement('enemy', this.getNumPlayers());
+    this.updateResourceSurplus_();
     this.isGameStarted = true;
     if (!this.stacks[this.currentStackIndex].length) {
       this.currentStackIndex = 1 - this.currentStackIndex;
       this.shuffleCards(this.currentStackIndex);
     }
+    this.highlightButton = 'add-resources';
   }.bind(this), 200);
 };
 
@@ -142,23 +144,18 @@ GameController.prototype.doShowLastCard = function(stackIndex) {
       this.lastCard;
 };
 
-GameController.prototype.placeTile = function(tile) {
-  if (!this.placement) {
-    this.mdBottomSheet_.show({
-      template: TILE_SHEET_TEMPLATE,
-      locals: {
-        tile: tile,
-        numPlayers: this.getNumPlayers(),
-      },
-      controller: 'TileSheetController as tileSheetCtrl'
-    }).then(function(resp) {
-      this.onSheetClickCallback(tile, resp);
-    }.bind(this));
-    return;
-  }
-
-  tile.advancePlacement(this.placement, this.getNumPlayers());
-  this.updateResourceSurplus_();
+GameController.prototype.onTileClick = function(tile) {
+  this.mdBottomSheet_.show({
+    template: TILE_SHEET_TEMPLATE,
+    locals: {
+      tile: tile,
+      numPlayers: this.getNumPlayers(),
+    },
+    controller: 'TileSheetController as tileSheetCtrl'
+  }).then(function(resp) {
+    this.onSheetClickCallback(tile, resp);
+  }.bind(this));
+  return;
 };
 
 GameController.prototype.onSheetClickCallback = function(tile, resp) {
@@ -166,7 +163,7 @@ GameController.prototype.onSheetClickCallback = function(tile, resp) {
     _.each(this.tiles_, function(tile) {
       if ((tile.hasPerson && this.getNumPlayers() == 1) ||
           tile.persons[resp.count]) {
-        tile.putPlacement('person', 0);
+        tile.clearPerson(resp.count);
         this.isGameStarted = true;
       }
     }.bind(this));
@@ -175,7 +172,7 @@ GameController.prototype.onSheetClickCallback = function(tile, resp) {
   if (resp.count > 0 && this.isGameStarted) {
     var resource = this.resources[resp.count - 1];
     if (tile.enemies && resp.placement == 'person') {
-      resource.mountain -= (tile.enemies + 1);
+      resource.mountain -= (tile.enemies);
      tile.putPlacement('enemy', 0);
     }
     if (resp.placement == 'person') {
@@ -188,9 +185,15 @@ GameController.prototype.onSheetClickCallback = function(tile, resp) {
       resource.mountain -= 3;
     }
   }
-  if (resp.placement == 'enemy') {
-    this.isGameStarted = true;
+  if (resp.placement != 'enemy') {
+    if (!this.isGameStarted) {
+      this.highlightButton = 'add-resources';
+    } else {
+      this.highlightButton = 'enemy';
+    }
   }
+  this.isGameStarted = true;
+
   this.updateResourceSurplus_();
 };
 
@@ -247,8 +250,18 @@ GameController.prototype.addMultiRes = function(resource, playerIndex) {
   if (playerIndex) {
     this.scrollTile_(this.findTileByPlayer_(playerIndex));
   }
+  this.highlightButton = 'actions';
 };
 
 GameController.prototype.isLastCard = function(tile) {
   return tile.city == this.lastCard;
 };
+
+GameController.prototype.isInDanger = function(tile) {
+  return tile.totalSurroundingEnemies >= 3;
+};
+
+GameController.prototype.isCurrentStack = function($index) {
+  return this.currentStackIndex == $index;
+};
+

@@ -1,5 +1,11 @@
 var app = angular.module('BlankApp', ['ngMaterial']);
 
+app.config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('blue-grey')
+    .accentPalette('orange');
+});
+
 app.factory('tileService', function() {
   return new TileService();
 });

@@ -155,9 +155,20 @@ body {
   margin: 2px 0;
   padding: 2px;
   position: relative;
+  overflow: hidden;
 
   .resource-row {
     white-space: nowrap;
+  }
+
+  .player-indicator {
+    width: 0; 
+    height: 0; 
+    border-left: 16px solid transparent;
+    border-top: 16px solid grey;
+    right: 0;
+    top: 0;
+    position: absolute;
   }
 }
 

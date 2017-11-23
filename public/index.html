@@ -29,9 +29,9 @@
         <md-button
              ng-repeat="tile in gameCtrl.getTiles()"
              ng-style="tile.styles"
-             ng-click="gameCtrl.placeTile(tile)"
+             ng-click="gameCtrl.onTileClick(tile)"
              class="box {{tile.valueClass}}"
-             ng-class="{'md-raised': !gameCtrl.isLastCard(tile)}">
+             ng-class="{'md-raised': !gameCtrl.isInDanger(tile)}">
           <div class="resource"
                ng-if="tile.getFaStyles().length">
             <i class="fa"
@@ -44,6 +44,7 @@
                 {{faStyle.playerCount}}
               </span>    
             </i>
+            <span ng-if="gameCtrl.isLastCard(tile) && tile.enemies">!</span>
           </div>
           {{tile.city}} 
         </md-button>
@@ -89,8 +90,10 @@
              aria-hidden="true"></i>
         </md-button>
         <div ng-repeat="resource in gameCtrl.resources track by $index"
-             class="resource-panel"
-             style="background-color: {{gameCtrl.getPlayerColor($index + 1)}}">
+             class="resource-panel">
+          <div class="player-indicator"
+               ng-if="gameCtrl.getNumPlayers() > 1"
+               style="border-top-color: {{gameCtrl.getPlayerColor($index + 1)}}"></div>
           <div class="resource-row">
             <md-button class="small-btn"
                        aria-label="reduce resource"
@@ -171,6 +174,10 @@
           </div>
           <div ng-if="resource.forestPlus || resource.fieldPlus || resource.mountainPlus">
             <md-button class="add-res-btn"
+                       ng-class="{
+                                  'md-primary': gameCtrl.highlightButton == 'add-resources',
+                                  'md-raised': gameCtrl.highlightButton == 'add-resources'
+                               }"
                        aria-label="add resources"
                        ng-click="gameCtrl.addMultiRes(resource, $index + 1)">
               <i class="fa fa-plus-square-o"
@@ -222,8 +229,9 @@
                 </md-button>
                 <md-button class="small-btn"
                            aria-label="draw enemy"
-                           ng-class="{'md-primary': gameCtrl.doPlaceEnemy(),
-                               'md-raised': (gameCtrl.currentStackIndex == $index)}"
+                           ng-class="{
+                              'md-primary': gameCtrl.isCurrentStack($index) && gameCtrl.highlightButton == 'enemy',
+                              'md-raised': gameCtrl.isCurrentStack($index)}"
                            ng-disabled="gameCtrl.isDrawingCards"
                            ng-click="gameCtrl.drawAndPlaceEnemyCard($index)">
                   <md-tooltip>Đặt quân địch</md-tooltip>
@@ -256,6 +264,9 @@
            ng-if="gameCtrl.getNumPlayers()==1">
         <div ng-init="resource=gameCtrl.resources[0]">
           <md-button class="mini-resource"
+                     ng-class="{
+                        'md-primary': gameCtrl.highlightButton == 'add-resources'
+                     }"
                      aria-label="mini resources"
                      ng-click="gameCtrl.addMultiRes(resource, 1)">
             {{resource.forest}} <span ng-if="resource.forestPlus">({{resource.forestPlus}})</span>
@@ -274,7 +285,7 @@
         </div>
         <div>
           <md-button aria-label="draw enemy"
-                     ng-class="{'md-primary': gameCtrl.doPlaceEnemy()}"
+                     ng-class="{'md-primary':  gameCtrl.highlightButton == 'enemy'}"
                      ng-disabled="gameCtrl.isDrawingCards"
                      ng-click="gameCtrl.drawLastStackAndPlaceEnemy()">
             <md-tooltip>Đặt quân địch</md-tooltip>

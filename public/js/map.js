@@ -130,7 +130,7 @@ function findNeighbors(x, y) {
       var matchedTile = RAW_MAP[cell.y + dir.y][cell.x + dir.x];
       if (!mapGraph[tileValue][matchedTile]) {
         mapGraph[tileValue][matchedTile] = true;
-        neighbors.push(matchedTile);
+        neighbors.push(CITIES[matchedTile]);
       }
     });
   });

@@ -16,7 +16,8 @@ body {
   align-items: center;
   padding: 40px;
   width: 1000px;
-  height: 1000px; }
+  height: 1000px;
+  position: relative; }
 
 @keyframes jumping {
   0% {
@@ -60,7 +61,7 @@ body {
   flex-direction: row; }
 
 .controls-wrapper {
-  background: #fafafa;
+  background: whitesmoke;
   display: flex;
   flex-direction: column;
   margin-left: 8px;
@@ -89,7 +90,7 @@ body {
     opacity: 1;
     display: inline-block;
     margin-right: 2px;
-    width: 4px; }
+    width: 3px; }
     .shuffling-cards .stack .card-wrapper {
       opacity: 0; }
   .stack .card {
@@ -115,8 +116,8 @@ body {
     white-space: nowrap; }
 
 .reset {
-  position: fixed;
-  bottom: 4px;
+  position: absolute;
+  top: 4px;
   right: 24px;
   opacity: .5; }
 
@@ -141,3 +142,6 @@ md-backdrop.md-opaque {
 @media only screen and (min-device-width: 480px) {
   .overlay-controls {
     display: none; } }
+
+.players {
+  margin: 24px 0; }

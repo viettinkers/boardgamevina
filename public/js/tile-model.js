@@ -144,7 +144,8 @@ TileModel.prototype.advancePlacement = function(placement, playerNum) {
     this.advancePlayerCount_('town', playerNum);
   } else if (placement == 'fortress') {
     this.advancePlayerCount_('fortress', playerNum);
-  } else if (placement == 'enemy') {
+  }
+  if (placement == 'enemy') {
     this.enemies = (this.enemies + 1) % 6;
   } else {
     this.clearTile();

@@ -20,7 +20,6 @@
          ng-class="{'winning': gameCtrl.isWinning}">
       <md-button aria-label="Restart"
                  class="reset"
-                 ng-if="false"
                  ng-click="gameCtrl.restart()">
         <md-tooltip>Tái sinh</md-tooltip>
         <i class="fa fa-refresh"
@@ -40,7 +39,7 @@
                ng-class="faStyle.style"
                style="color: {{gameCtrl.getNumPlayers() > 1 ? faStyle.color : '';}}">
               <span class="annotate"
-                    ng-if="faStyle.playerCount && gameCtrl.getNumPlayers() > 1">
+                    ng-if="false && faStyle.playerCount && gameCtrl.getNumPlayers() > 1">
                 {{faStyle.playerCount}}
               </span>    
             </i>
@@ -50,12 +49,14 @@
       </div>
       <div class="controls-wrapper">
         <md-button
+             ng-if="false"
              aria-label="placement"
              ng-click="gameCtrl.resetPlacement()">
           <i class="fa fa-mouse-pointer"
              aria-hidden="true"></i>
         </md-button>
         <md-button
+             ng-if="false"
              aria-label="person"
              ng-click="gameCtrl.togglePerson()"
              ng-class="{'md-raised': (gameCtrl.placement == 'person')}">
@@ -63,6 +64,7 @@
              aria-hidden="true"></i>
         </md-button>
         <md-button
+             ng-if="false"
              aria-label="enemy"
              ng-click="gameCtrl.toggleEnemy()"
              ng-class="{'md-raised': (gameCtrl.placement == 'enemy')}">
@@ -70,6 +72,7 @@
              aria-hidden="true"></i>
         </md-button>
         <md-button
+             ng-if="false"
              aria-label="town"
              ng-click="gameCtrl.toggleTown()"
              ng-class="{'md-raised': (gameCtrl.placement == 'town')}">
@@ -77,14 +80,16 @@
              aria-hidden="true"></i>
         </md-button>
         <md-button
+             ng-if="false"
              aria-label="fortress"
              ng-click="gameCtrl.toggleFortress()"
              ng-class="{'md-raised': (gameCtrl.placement == 'fortress')}">
           <i class="fa fa-building"
              aria-hidden="true"></i>
         </md-button>
-        <div ng-repeat="resource in gameCtrl.resources"
-             class="resource-panel">
+        <div ng-repeat="resource in gameCtrl.resources track by $index"
+             class="resource-panel"
+             style="background-color: {{gameCtrl.getPlayerColor($index + 1)}}">
           <div class="resource-row">
             <md-button class="small-btn"
                        aria-label="reduce resource"
@@ -166,7 +171,7 @@
           <div ng-if="resource.forestPlus || resource.fieldPlus || resource.mountainPlus">
             <md-button class="add-res-btn"
                        aria-label="add resources"
-                       ng-click="gameCtrl.addMultiRes(resource)">
+                       ng-click="gameCtrl.addMultiRes(resource, $index + 1)">
               <i class="fa fa-plus-square-o"
                  aria-hidden="true"></i>
               {{resource.forestPlus}}
@@ -216,7 +221,8 @@
                 </md-button>
                 <md-button class="small-btn"
                            aria-label="draw enemy"
-                           ng-class="{'md-primary': gameCtrl.doPlaceEnemy()}"
+                           ng-class="{'md-primary': gameCtrl.doPlaceEnemy(),
+                               'md-raised': (gameCtrl.currentStackIndex == $index)}"
                            ng-disabled="gameCtrl.isDrawingCards"
                            ng-click="gameCtrl.placeEnemyCard($index)">
                   <md-tooltip>Đặt quân địch</md-tooltip>
@@ -227,7 +233,7 @@
                 </md-button>
                 <span class="md-caption"
                       ng-if="gameCtrl.doShowLastCard($index)">
-                  "{{gameCtrl.lastCard}}"
+                  {{gameCtrl.lastCard}}
                 </span>
               </div>
             </div>
@@ -250,7 +256,7 @@
         <div ng-init="resource=gameCtrl.resources[0]">
           <md-button class="mini-resource"
                      aria-label="mini resources"
-                     ng-click="gameCtrl.addMultiRes(resource)">
+                     ng-click="gameCtrl.addMultiRes(resource, 1)">
             {{resource.forest}} <span ng-if="resource.forestPlus">({{resource.forestPlus}})</span>
             <i class="fa fa-tree"
                aria-hidden="true"></i>

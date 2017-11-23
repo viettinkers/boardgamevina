@@ -30,7 +30,8 @@
              ng-repeat="tile in gameCtrl.getTiles()"
              ng-style="tile.styles"
              ng-click="gameCtrl.placeTile(tile)"
-             class="box md-raised {{tile.valueClass}}">
+             class="box {{tile.valueClass}}"
+             ng-class="{'md-raised': !gameCtrl.isLastCard(tile)}">
           <div class="resource"
                ng-if="tile.getFaStyles().length">
             <i class="fa"
@@ -224,7 +225,7 @@
                            ng-class="{'md-primary': gameCtrl.doPlaceEnemy(),
                                'md-raised': (gameCtrl.currentStackIndex == $index)}"
                            ng-disabled="gameCtrl.isDrawingCards"
-                           ng-click="gameCtrl.placeEnemyCard($index)">
+                           ng-click="gameCtrl.drawAndPlaceEnemyCard($index)">
                   <md-tooltip>Đặt quân địch</md-tooltip>
                   <i class="fa fa-user-secret"
                      aria-hidden="true"></i>
@@ -275,7 +276,7 @@
           <md-button aria-label="draw enemy"
                      ng-class="{'md-primary': gameCtrl.doPlaceEnemy()}"
                      ng-disabled="gameCtrl.isDrawingCards"
-                     ng-click="gameCtrl.placeEnemyCardLastStack()">
+                     ng-click="gameCtrl.drawLastStackAndPlaceEnemy()">
             <md-tooltip>Đặt quân địch</md-tooltip>
             <i class="fa fa-user-secret"
                aria-hidden="true"></i>
@@ -299,6 +300,7 @@
   <script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.js"></script>
   <script src="js/map.js"></script>  
   <script src="js/constants.js"></script>  
+  <script src="js/templates.js"></script>  
   <script src="js/tile-model.js"></script>  
   <script src="js/tile-service.js"></script>  
   <script src="js/game-controller.js"></script>

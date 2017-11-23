@@ -11,7 +11,7 @@ GameController.prototype.restart = function() {
   this.tiles_ = this.tileService_.generateTiles();
   this.resources = [];
   this.placement = '';
-  this.stacks = [this.tileService_.generateCards(), []];
+  this.stacks = [this.tileService_.generateCards().slice(0, 3), []];
   this.currentStackIndex = 0;
   this.lastCard = '';
   this.lastDrawnStack_ = null;
@@ -81,9 +81,6 @@ GameController.prototype.drawCard = function(stackIndex) {
     this.isDrawingCards = false;
     this.stacks[1 - stackIndex].push(this.lastCard);
   }.bind(this), 500);
-  //if (this.isGameStarted) {
-  //  this.placement = 'enemy';
-  //}
   this.scrollTile_(this.findTileByCity_(this.lastCard));
 };
 
@@ -109,7 +106,7 @@ GameController.prototype.findTileByPlayer_ = function(playerIndex) {
   });
 };
 
-GameController.prototype.placeEnemyCard = function(stackIndex) {
+GameController.prototype.drawAndPlaceEnemyCard = function(stackIndex) {
   this.timeout_(function() {
     this.drawCard(stackIndex);
     var hasTownOrFortress = false;
@@ -122,17 +119,18 @@ GameController.prototype.placeEnemyCard = function(stackIndex) {
     this.isGameStarted = true;
     if (!this.stacks[this.currentStackIndex].length) {
       this.currentStackIndex = 1 - this.currentStackIndex;
+      this.shuffleCards(this.currentStackIndex);
     }
-  }.bind(this), 250);
+  }.bind(this), 200);
 };
 
-GameController.prototype.placeEnemyCardLastStack = function() {
-  this.placeEnemyCard(this.currentStackIndex);
+GameController.prototype.drawLastStackAndPlaceEnemy = function() {
+  this.drawAndPlaceEnemyCard(this.currentStackIndex);
 };
 
 GameController.prototype.shuffleCards = function(stackIndex) {
   this.stacks[stackIndex] = _.shuffle(this.stacks[stackIndex]);
-  this.lastCard = '';
+  //this.lastCard = '';
   this.element_.addClass('shuffling-cards');
   this.timeout_(function() {
     this.element_.removeClass('shuffling-cards');
@@ -147,71 +145,7 @@ GameController.prototype.doShowLastCard = function(stackIndex) {
 GameController.prototype.placeTile = function(tile) {
   if (!this.placement) {
     this.mdBottomSheet_.show({
-      template: `
-      <md-bottom-sheet class="md-grid" layout="column">
-        <div layout="row" layout-align="center center" ng-cloak>
-          <h2 class="md-title">{{tileSheetCtrl.getCity()}}</h2>
-        </div>
-        <div ng-cloak>
-          <md-list flex layout="row" layout-align="center center">
-            <md-button
-                 class="md-raised md-icon-button"
-                 aria-label="person"
-                 ng-click="tileSheetCtrl.clickBtn('person', $index)"
-                 ng-style="btn.styles"
-                 ng-repeat="btn in tileSheetCtrl.getBtns() track by $index"
-                 ng-class="{'md-primary': $index > 0}">
-              <i class="fa fa-male"
-                 aria-hidden="true"></i>
-            </md-button>
-          </md-list>
-          <md-list flex layout="row" layout-align="center center">
-            <md-button
-                 class="md-raised md-icon-button"
-                 aria-label="enemy"
-                 ng-click="tileSheetCtrl.clickBtn('enemy', $index)"
-                 ng-repeat="btn in [0, 1, 2, 3, 4, 5] track by $index"
-                 ng-class="{'md-primary': $index > 0}">
-              <span ng-if="$index > 1">{{$index}}</span>
-              <i class="fa fa-user-secret"
-                 aria-hidden="true"></i>
-            </md-button>
-          </md-list>
-          <md-list flex layout="row" layout-align="center center">
-            <md-button
-                 class="md-raised md-icon-button"
-                 aria-label="person"
-                 ng-click="tileSheetCtrl.clickBtn('town', $index)"
-                 ng-style="btn.styles"
-                 ng-repeat="btn in tileSheetCtrl.getBtns() track by $index"
-                 ng-class="{'md-primary': $index > 0}">
-              <i class="fa fa-home"
-                 aria-hidden="true"></i>
-            </md-button>
-          </md-list>
-          <md-list flex layout="row" layout-align="center center">
-            <md-button
-                 class="md-raised md-icon-button"
-                 aria-label="person"
-                 ng-click="tileSheetCtrl.clickBtn('fortress', $index)"
-                 ng-style="btn.styles"
-                 ng-repeat="btn in tileSheetCtrl.getBtns() track by $index"
-                 ng-class="{'md-primary': $index > 0}">
-              <i class="fa fa-building"
-                 aria-hidden="true"></i>
-            </md-button>
-          </md-list>
-          <md-list flex layout="row" layout-align="center center">
-            <md-button
-                 ng-click="tileSheetCtrl.clickBtn('clear', 0)"
-                 class="md-raised"
-                 aria-label="clear">
-              Xóa
-            </md-button>
-          </md-list>
-        </div>
-      </md-bottom-sheet>
-      `,
+      template: TILE_SHEET_TEMPLATE,
       locals: {
         tile: tile,
         numPlayers: this.getNumPlayers(),
@@ -313,4 +247,8 @@ GameController.prototype.addMultiRes = function(resource, playerIndex) {
   if (playerIndex) {
     this.scrollTile_(this.findTileByPlayer_(playerIndex));
   }
+};
+
+GameController.prototype.isLastCard = function(tile) {
+  return tile.city == this.lastCard;
 };

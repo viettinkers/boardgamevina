@@ -1,8 +1,9 @@
-GameController = function($scope, $element, $timeout, $mdBottomSheet, tileService) {
+GameController = function($scope, $element, $timeout, $mdBottomSheet, $mdDialog, tileService) {
   this.scope_ = $scope;
   this.element_ = $element;
   this.timeout_ = $timeout;
   this.mdBottomSheet_ = $mdBottomSheet;
+  this.mdDialog_ = $mdDialog;
   this.tileService_ = tileService;
   this.restart();
 };
@@ -71,20 +72,6 @@ GameController.prototype.resetPlacement = function() {
   this.placement = '';
 };
 
-GameController.prototype.drawCard = function(stackIndex) {
-  if (!this.stacks[stackIndex].length) {
-    return;
-  }
-  this.lastCard = this.stacks[stackIndex].pop();
-  this.lastDrawnStack_ = stackIndex;
-  this.isDrawingCards = true;
-  this.timeout_(function() {
-    this.isDrawingCards = false;
-    this.stacks[1 - stackIndex].push(this.lastCard);
-  }.bind(this), 500);
-  this.scrollTile_(this.findTileByCity_(this.lastCard));
-};
-
 GameController.prototype.scrollTile_ = function(tile) {
   if (tile) {
     var el = $($.find('.' + tile.valueClass));
@@ -107,27 +94,36 @@ GameController.prototype.findTileByPlayer_ = function(playerIndex) {
   });
 };
 
-GameController.prototype.drawAndPlaceEnemyCard = function(stackIndex) {
-  this.timeout_(function() {
-    this.drawCard(stackIndex);
-    var hasTownOrFortress = false;
-    var drawnTile = this.findTileByCity_(this.lastCard);
-    if (!drawnTile) {
-      return;
-    }
-    drawnTile.advancePlacement('enemy', this.getNumPlayers());
-    this.updateResourceSurplus_();
-    this.isGameStarted = true;
-    if (!this.stacks[this.currentStackIndex].length) {
-      this.currentStackIndex = 1 - this.currentStackIndex;
-      this.shuffleCards(this.currentStackIndex);
-    }
-    this.highlightButton = 'add-resources';
-  }.bind(this), 200);
-};
-
 GameController.prototype.drawLastStackAndPlaceEnemy = function() {
   this.drawAndPlaceEnemyCard(this.currentStackIndex);
+};
+
+GameController.prototype.drawAndPlaceEnemyCard = function(stackIndex) {
+  this.drawCard(stackIndex);
+  var hasTownOrFortress = false;
+  var drawnTile = this.findTileByCity_(this.lastCard);
+  if (!drawnTile) {
+    return;
+  }
+  drawnTile.advancePlacement('enemy', this.getNumPlayers());
+  this.updateResourceSurplus_();
+  this.isGameStarted = true;
+  this.highlightButton = 'add-resources';
+  this.scrollTile_(this.findTileByCity_(this.lastCard));
+};
+
+GameController.prototype.drawCard = function(stackIndex) {
+  if (!this.stacks[stackIndex].length) {
+    return;
+  }
+  var card = this.stacks[stackIndex].pop();
+  this.lastCard = card;
+  this.lastDrawnStack_ = stackIndex;
+  this.stacks[1 - stackIndex].push(card);
+  if (this.stacks[stackIndex].length == 0) {
+    this.shuffleCards(1 - stackIndex);
+    this.currentStackIndex = 1 - stackIndex;
+  }
 };
 
 GameController.prototype.shuffleCards = function(stackIndex) {
@@ -172,7 +168,7 @@ GameController.prototype.onSheetClickCallback = function(tile, resp) {
   if (resp.count > 0 && this.isGameStarted) {
     var resource = this.resources[resp.count - 1];
     if (tile.enemies && resp.placement == 'person') {
-      resource.mountain -= (tile.enemies);
+      resource.mountain -= (tile.enemies + 1);
      tile.putPlacement('enemy', 0);
     }
     if (resp.placement == 'person') {
@@ -191,8 +187,9 @@ GameController.prototype.onSheetClickCallback = function(tile, resp) {
     } else {
       this.highlightButton = 'enemy';
     }
+  } else {
+    this.isGameStarted = true;
   }
-  this.isGameStarted = true;
 
   this.updateResourceSurplus_();
 };
@@ -210,8 +207,7 @@ GameController.prototype.updateResourceSurplus_ = function() {
       }
     }.bind(this));
     _.each(this.tiles_, function(tile) {
-      if (tile.playerCount['fortress'] && tile.playerCount['fortress'] == resourceIndex + 1) {
-      } else if (tile.playerCount['town'] && tile.playerCount['town'] == resourceIndex + 1 && tile.enemies == 0) {
+      if (tile.playerCount['town'] && tile.playerCount['town'] == resourceIndex + 1 && tile.enemies == 0) {
         resource[tile.resource + 'Plus']+=1;
       }
       if (tile.isDiscovered) {
@@ -235,6 +231,7 @@ GameController.prototype.getPlayerColor = function(index) {
 };
 
 GameController.prototype.addMultiRes = function(resource, playerIndex) {
+  this.isGameStarted = true;
   if (resource.forestPlus) {
     resource.forest += resource.forestPlus;
   }
@@ -244,12 +241,12 @@ GameController.prototype.addMultiRes = function(resource, playerIndex) {
   if (resource.mountainPlus) {
     resource.mountain += resource.mountainPlus;
   }
-  resource.forestPlus = 0;
-  resource.fieldPlus = 0;
-  resource.mountainPlus = 0;
-  if (playerIndex) {
-    this.scrollTile_(this.findTileByPlayer_(playerIndex));
-  }
+  //resource.forestPlus = 0;
+  //resource.fieldPlus = 0;
+  //resource.mountainPlus = 0;
+  //if (playerIndex) {
+  //  this.scrollTile_(this.findTileByPlayer_(playerIndex));
+  //}
   this.highlightButton = 'actions';
 };
 

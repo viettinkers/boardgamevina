@@ -1,4 +1,7 @@
+$md-ease: cubic-bezier(.4, 0, .2, 1);
+
 body {
+  background: #aaa;
   overflow: hidden;
 }
 
@@ -12,7 +15,6 @@ body {
 }
 
 .wrapper {
-  background: white;
   display: flex !important;
   flex-direction: column;
   align-items: center;
@@ -70,7 +72,7 @@ body {
       }
 
       .winning &.fa-male {
-        animation: jumping 1s ease infinite;
+        animation: jumping 1s $md-ease infinite;
       }
     }
   }
@@ -114,12 +116,42 @@ body {
   }
 }
 
+@keyframes card-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes card-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
 .stack {
   width: 208px;
   position: relative;
 
   .card-wrapper {
-    transition: opacity 0.2s cubic-bezier(.4, 0, .2, 1);
+    transition: opacity 0.2s $md-ease forwards;
     opacity: 1;
     display: inline-block;
     margin-right: 2px;
@@ -127,6 +159,14 @@ body {
 
     .shuffling-cards & {
       opacity: 0;
+    }
+
+    &.ng-leave {
+      animation: card-out 0.4s $md-ease;
+    }
+
+    &.ng-enter {
+      animation: card-in 0.4s $md-ease;
     }
   }
 

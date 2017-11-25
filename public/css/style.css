@@ -1,4 +1,5 @@
 body {
+  background: #aaa;
   overflow: hidden; }
 
 .game-wrapper {
@@ -10,7 +11,6 @@ body {
   bottom: 0; }
 
 .wrapper {
-  background: white;
   display: flex !important;
   flex-direction: column;
   align-items: center;
@@ -54,7 +54,7 @@ body {
         right: -1px;
         bottom: -3px; }
       .winning .board-wrapper .box .fa.fa-male {
-        animation: jumping 1s ease infinite; }
+        animation: jumping 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 
 .wrapper {
   display: flex;
@@ -82,17 +82,43 @@ body {
     width: 20px;
     text-align: center; }
 
+@keyframes card-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px); }
+  50% {
+    opacity: 0;
+    transform: translateY(-8px); }
+  100% {
+    opacity: 1;
+    transform: translateY(0px); } }
+
+@keyframes card-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0px); }
+  50% {
+    opacity: 0;
+    transform: translateY(8px); }
+  100% {
+    opacity: 0;
+    transform: translateY(8px); } }
+
 .stack {
   width: 208px;
   position: relative; }
   .stack .card-wrapper {
-    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     opacity: 1;
     display: inline-block;
     margin-right: 2px;
     width: 3px; }
     .shuffling-cards .stack .card-wrapper {
       opacity: 0; }
+    .stack .card-wrapper.ng-leave {
+      animation: card-out 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .stack .card-wrapper.ng-enter {
+      animation: card-in 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
   .stack .card {
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
     display: inline-block;

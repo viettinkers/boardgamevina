@@ -152,6 +152,8 @@ TileModel.prototype.advancePlacement = function(placement, playerNum) {
   } else {
     this.clearTile();
   }
+  this.calculateSurroundingEnemies();
+  this.updateNeighbors();
   this.faStyles = this.getFaStyles();
 };
 
@@ -172,6 +174,8 @@ TileModel.prototype.clearPerson = function(index) {
     this.hasPerson = false;
     this.playerCount['person'] = 0;
   }
+  this.calculateSurroundingEnemies();
+  this.updateNeighbors();
   this.faStyles = this.getFaStyles();
 };
 
@@ -197,9 +201,9 @@ TileModel.prototype.putPlacement = function(placement, count) {
       this.persons[count] = true;
     }
   }
-  this.faStyles = this.getFaStyles();
   this.calculateSurroundingEnemies();
   this.updateNeighbors();
+  this.faStyles = this.getFaStyles();
 };
 
 TileModel.prototype.updateNeighbors = function() {
@@ -214,6 +218,9 @@ TileModel.prototype.setNeighborTiles = function(neighborTiles) {
 
 TileModel.prototype.calculateSurroundingEnemies = function() {
   this.totalSurroundingEnemies = this.enemies;
+  if (this.hasPerson) {
+    this.totalSurroundingEnemies--;
+  }
   _.each(this.neighborTiles, function(tile) {
     this.totalSurroundingEnemies += tile.enemies;
   }.bind(this));

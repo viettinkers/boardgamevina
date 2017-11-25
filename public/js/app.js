@@ -11,7 +11,7 @@ app.factory('tileService', function() {
 });
 
 app.controller('GameController',
-    ['$scope', '$element', '$timeout', '$mdBottomSheet', 'tileService', GameController]);
+    ['$scope', '$element', '$timeout', '$mdBottomSheet', '$mdDialog', 'tileService', GameController]);
 
 app.controller('TileSheetController',
     ['$scope', '$element', '$timeout', '$mdBottomSheet', 'tile', 'numPlayers', TileSheetController]);

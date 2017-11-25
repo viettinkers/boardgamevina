@@ -220,7 +220,7 @@
               <div class="draw-row">
                 <md-button class="small-btn"
                            aria-label="draw"
-                           ng-class="{'md-primary': gameCtrl.doShowLastCard($index)}"
+                           ng-class="{'md-raised': !gameCtrl.isGameStarted && gameCtrl.isCurrentStack($index)}"
                            ng-disabled="gameCtrl.isDrawingCards"
                            ng-click="gameCtrl.drawCard($index)">
                   <md-tooltip>Lấy bài</md-tooltip>
@@ -231,7 +231,7 @@
                            aria-label="draw enemy"
                            ng-class="{
                               'md-primary': gameCtrl.isCurrentStack($index) && gameCtrl.highlightButton == 'enemy',
-                              'md-raised': gameCtrl.isCurrentStack($index)}"
+                              'md-raised': gameCtrl.isCurrentStack($index) && gameCtrl.isGameStarted}"
                            ng-disabled="gameCtrl.isDrawingCards"
                            ng-click="gameCtrl.drawAndPlaceEnemyCard($index)">
                   <md-tooltip>Đặt quân địch</md-tooltip>
@@ -265,7 +265,7 @@
         <div ng-init="resource=gameCtrl.resources[0]">
           <md-button class="mini-resource"
                      ng-class="{
-                        'md-primary': gameCtrl.highlightButton == 'add-resources'
+                        'md-raised': gameCtrl.highlightButton == 'add-resources'
                      }"
                      aria-label="mini resources"
                      ng-click="gameCtrl.addMultiRes(resource, 1)">
@@ -285,7 +285,7 @@
         </div>
         <div>
           <md-button aria-label="draw enemy"
-                     ng-class="{'md-primary':  gameCtrl.highlightButton == 'enemy'}"
+                     ng-class="{'md-raised':  gameCtrl.highlightButton == 'enemy'}"
                      ng-disabled="gameCtrl.isDrawingCards"
                      ng-click="gameCtrl.drawLastStackAndPlaceEnemy()">
             <md-tooltip>Đặt quân địch</md-tooltip>

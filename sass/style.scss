@@ -71,6 +71,7 @@ body {
         bottom: -3px;
       }
 
+      .losing &.fa-user-secret,
       .winning &.fa-male {
         animation: jumping 1s $md-ease infinite;
       }

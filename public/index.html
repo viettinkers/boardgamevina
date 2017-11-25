@@ -17,7 +17,8 @@
   <div class="game-wrapper">
     <div ng-controller="GameController as gameCtrl"
          class="wrapper"
-         ng-class="{'winning': gameCtrl.isWinning}">
+         ng-class="{'winning': gameCtrl.isWinning,
+                    'losing': gameCtrl.isLosing}">
       <md-button aria-label="Restart"
                  class="reset"
                  ng-click="gameCtrl.restart()">

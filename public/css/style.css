@@ -53,6 +53,7 @@ body {
         position: absolute;
         right: -1px;
         bottom: -3px; }
+      .losing .board-wrapper .box .fa.fa-user-secret,
       .winning .board-wrapper .box .fa.fa-male {
         animation: jumping 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 

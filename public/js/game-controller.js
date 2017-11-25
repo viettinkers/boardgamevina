@@ -19,6 +19,7 @@ GameController.prototype.restart = function() {
   this.isDrawingCards = false;
   this.isGameStarted = false;
   this.isWinning = false;
+  this.isLosing = false;
   this.highlightButton = '';
   this.addPlayer();
 };
@@ -106,6 +107,9 @@ GameController.prototype.drawAndPlaceEnemyCard = function(stackIndex) {
     return;
   }
   drawnTile.advancePlacement('enemy', this.getNumPlayers());
+  if (drawnTile.enemies > 3) {
+    this.isLosing = true;
+  }
   this.updateResourceSurplus_();
   this.isGameStarted = true;
   this.highlightButton = 'add-resources';

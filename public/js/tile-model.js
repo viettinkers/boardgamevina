@@ -217,11 +217,11 @@ TileModel.prototype.setNeighborTiles = function(neighborTiles) {
 };
 
 TileModel.prototype.calculateSurroundingEnemies = function() {
-  this.totalSurroundingEnemies = this.enemies;
-  if (this.hasPerson) {
-    this.totalSurroundingEnemies--;
-  }
+  this.totalSurroundingEnemies = 0;//this.enemies;
+  //if (this.hasPerson) {
+  //  this.totalSurroundingEnemies--;
+  //}
   _.each(this.neighborTiles, function(tile) {
-    this.totalSurroundingEnemies += tile.enemies;
+    //this.totalSurroundingEnemies += tile.enemies;
   }.bind(this));
 };

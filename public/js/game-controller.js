@@ -113,7 +113,9 @@ GameController.prototype.drawAndPlaceEnemyCard = function(stackIndex) {
   this.updateResourceSurplus_();
   this.isGameStarted = true;
   this.highlightButton = 'add-resources';
-  this.scrollTile_(this.findTileByCity_(this.lastCard));
+  if (drawnTile.hasPerson) {
+    this.scrollTile_(this.findTileByCity_(this.lastCard));
+  }
 };
 
 GameController.prototype.drawCard = function(stackIndex) {
@@ -172,7 +174,7 @@ GameController.prototype.onSheetClickCallback = function(tile, resp) {
   if (resp.count > 0 && this.isGameStarted) {
     var resource = this.resources[resp.count - 1];
     if (tile.enemies && resp.placement == 'person') {
-      resource.mountain -= (tile.enemies + 1);
+      resource.mountain -= (tile.enemies);
      tile.putPlacement('enemy', 0);
     }
     if (resp.placement == 'person') {

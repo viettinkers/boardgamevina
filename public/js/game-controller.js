@@ -174,8 +174,9 @@ GameController.prototype.onSheetClickCallback = function(tile, resp) {
   if (resp.count > 0 && this.isGameStarted) {
     var resource = this.resources[resp.count - 1];
     if (tile.enemies && resp.placement == 'person') {
-      resource.mountain -= (tile.enemies);
-     tile.putPlacement('enemy', 0);
+      resource.mountain -= (tile.enemies + 1);
+      resource[tile.resource] += tile.enemies;
+      tile.putPlacement('enemy', 0);
     }
     if (resp.placement == 'person') {
       resource.field -= 1;
